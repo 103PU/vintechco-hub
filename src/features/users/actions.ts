@@ -4,12 +4,12 @@ import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/prisma/client'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/features/auth/config/authOptions'
-import { Role } from '@prisma/client'
+import { Role } from '@/lib/auth/rbac'
 
 export async function updateUserRole(userId: string, newRole: Role) {
     const session = await getServerSession(authOptions);
     const role = (session?.user as { role?: string } | undefined)?.role;
-    
+
     // Security check: Only admins can change roles
     if (role !== 'ADMIN') {
         return { success: false, error: 'Unauthorized' };
@@ -41,7 +41,7 @@ export async function updateUserRole(userId: string, newRole: Role) {
 export async function deleteUser(userId: string) {
     const session = await getServerSession(authOptions);
     const role = (session?.user as { role?: string } | undefined)?.role;
-    
+
     if (role !== 'ADMIN') {
         return { success: false, error: 'Unauthorized' };
     }

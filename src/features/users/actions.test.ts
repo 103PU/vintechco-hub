@@ -1,7 +1,7 @@
 import { updateUserRole, deleteUser } from './actions';
 import { prisma } from '@/lib/prisma/client';
 import { getServerSession } from 'next-auth';
-import { Role } from '@prisma/client';
+import { Role } from '@/lib/auth/rbac';
 
 // Mock dependencies
 jest.mock('@/lib/prisma/client', () => ({
@@ -33,8 +33,8 @@ describe('User Actions Security Verification', () => {
   describe('updateUserRole', () => {
     it('Should BLOCK non-admin users', async () => {
       // Mock TECHNICIAN session
-      (getServerSession as jest.Mock).mockResolvedValue({ 
-        user: { id: 'tech-1', role: 'TECHNICIAN' } 
+      (getServerSession as jest.Mock).mockResolvedValue({
+        user: { id: 'tech-1', role: 'TECHNICIAN' }
       });
 
       const result = await updateUserRole('target-user', 'ADMIN');
@@ -46,8 +46,8 @@ describe('User Actions Security Verification', () => {
 
     it('Should BLOCK admin from modifying themselves', async () => {
       // Mock ADMIN session
-      (getServerSession as jest.Mock).mockResolvedValue({ 
-        user: { id: 'admin-1', role: 'ADMIN' } 
+      (getServerSession as jest.Mock).mockResolvedValue({
+        user: { id: 'admin-1', role: 'ADMIN' }
       });
 
       const result = await updateUserRole('admin-1', 'TECHNICIAN'); // Target same ID
@@ -59,8 +59,8 @@ describe('User Actions Security Verification', () => {
 
     it('Should ALLOW admin to modify other users', async () => {
       // Mock ADMIN session
-      (getServerSession as jest.Mock).mockResolvedValue({ 
-        user: { id: 'admin-1', role: 'ADMIN' } 
+      (getServerSession as jest.Mock).mockResolvedValue({
+        user: { id: 'admin-1', role: 'ADMIN' }
       });
 
       (prisma.user.update as jest.Mock).mockResolvedValue({});
@@ -74,8 +74,8 @@ describe('User Actions Security Verification', () => {
 
   describe('deleteUser', () => {
     it('Should BLOCK non-admin users', async () => {
-      (getServerSession as jest.Mock).mockResolvedValue({ 
-        user: { id: 'tech-1', role: 'TECHNICIAN' } 
+      (getServerSession as jest.Mock).mockResolvedValue({
+        user: { id: 'tech-1', role: 'TECHNICIAN' }
       });
 
       const result = await deleteUser('target-user');
@@ -86,8 +86,8 @@ describe('User Actions Security Verification', () => {
     });
 
     it('Should ALLOW admin to delete other users', async () => {
-      (getServerSession as jest.Mock).mockResolvedValue({ 
-        user: { id: 'admin-1', role: 'ADMIN' } 
+      (getServerSession as jest.Mock).mockResolvedValue({
+        user: { id: 'admin-1', role: 'ADMIN' }
       });
 
       (prisma.user.delete as jest.Mock).mockResolvedValue({});
