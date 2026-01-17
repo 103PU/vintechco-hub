@@ -479,9 +479,9 @@ export async function createDocumentType(name: string) {
     try {
         await prisma.documentType.create({ data: { name } });
         return { success: true };
-    } catch (error: any) {
+    } catch (error) {
         console.error('Failed to create document type:', error);
-        if (error.code === 'P2002') {
+        if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
             return { success: false, error: 'Tên loại văn bản đã tồn tại.' };
         }
         return { success: false, error: 'Failed to create document type' };
@@ -492,8 +492,8 @@ export async function updateDocumentType(id: string, name: string) {
     try {
         await prisma.documentType.update({ where: { id }, data: { name } });
         return { success: true };
-    } catch (error: any) {
-        if (error.code === 'P2002') {
+    } catch (error) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
             return { success: false, error: 'Tên loại văn bản đã tồn tại.' };
         }
         return { success: false, error: 'Failed to update document type' };

@@ -27,9 +27,10 @@ async function main() {
         console.log("DEBUG: Checking S3 storage...");
         await ensureBucketExists();
         console.log("DEBUG: S3 storage OK.");
-    } catch (e: any) {
+    } catch (e: unknown) {
         // Reduced noise logging for S3
-        if (e.message !== "S3 Connection Timeout") console.error("   ❌ S3 Init Failed:", e);
+        const message = e instanceof Error ? e.message : String(e);
+        if (message !== "S3 Connection Timeout") console.error("   ❌ S3 Init Failed:", e);
     }
 
     if (!command) {
@@ -151,8 +152,9 @@ async function processFolderRecursive(currentPath: string, pathStack: string[], 
                     console.error(`     ❌ Error: ${result.message}`);
                     RUN_STATS.errors++;
                 }
-            } catch (err: any) {
-                console.error(`     ❌ CRITICAL ERROR: ${err.message}`);
+            } catch (err: unknown) {
+                const msg = err instanceof Error ? err.message : String(err);
+                console.error(`     ❌ CRITICAL ERROR: ${msg}`);
                 RUN_STATS.errors++;
             }
         }

@@ -38,8 +38,8 @@ export const parseDocumentAction = withRole([Role.ADMIN, Role.TECHNICIAN], async
             metadata: result.metadata
         };
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error('Parse Error:', error);
-        return { success: false, error: 'Failed to parse document: ' + error.message };
+        return { success: false, error: 'Failed to parse document: ' + (error instanceof Error ? error.message : 'Unknown error') };
     }
 });

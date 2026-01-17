@@ -1,4 +1,4 @@
-import { useEffect, useRef, useMemo, createElement, ElementType } from 'react';
+import { useEffect, useRef, useMemo, createElement } from 'react';
 import type { TagGroup } from '../../utils/doc-grouping';
 import { HomeDocumentCard } from './HomeDocumentCard';
 import { getTagColorStyles, getTagIcon } from '../../utils/ui-helpers';

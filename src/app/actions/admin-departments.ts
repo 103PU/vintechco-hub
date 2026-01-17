@@ -1,6 +1,6 @@
 'use server';
 
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { withRole, Role } from '@/lib/auth/rbac';
@@ -42,12 +42,12 @@ export const createDepartment = withRole([Role.ADMIN], async (formData: FormData
                 name: validated.data.name,
                 code: validated.data.code,
                 description: validated.data.description,
-            } as any
+            }
         });
         revalidatePath('/admin/departments');
         return { success: true };
-    } catch (e: any) {
-        if (e.code === 'P2002') return { success: false, error: 'Mã hoặc tên phòng ban đã tồn tại.' };
+    } catch (e) {
+        if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002') return { success: false, error: 'Mã hoặc tên phòng ban đã tồn tại.' };
         return { success: false, error: 'Lỗi hệ thống.' };
     }
 });

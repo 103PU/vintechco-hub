@@ -1,5 +1,7 @@
 'use client';
 
+import { Brand } from '@prisma/client';
+
 import { createBrand, deleteBrand } from '@/app/actions/admin-taxonomy';
 import { AdminTable } from '@/components/admin/admin-table';
 import { Button } from '@/components/ui/button';
@@ -11,10 +13,12 @@ import { Trash2, Plus } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-export function BrandClientWrapper({ initialData }: { initialData: any[] }) {
+type BrandWithCount = Brand & { _count: { machineModels: number } };
+
+export function BrandClientWrapper({ initialData }: { initialData: BrandWithCount[] }) {
     const [open, setOpen] = useState(false);
 
-    const columns: ColumnDef<any>[] = [
+    const columns: ColumnDef<BrandWithCount>[] = [
         {
             accessorKey: "name",
             header: "Tên Thương Hiệu",

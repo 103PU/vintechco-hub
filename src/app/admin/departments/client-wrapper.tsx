@@ -1,5 +1,7 @@
 'use client';
 
+import { Department } from '@prisma/client';
+
 import { createDepartment, deleteDepartment } from '@/app/actions/admin-departments';
 import { AdminTable } from '@/components/admin/admin-table';
 import { Button } from '@/components/ui/button';
@@ -11,18 +13,12 @@ import { Trash2, Plus } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-export type Department = {
-    id: string;
-    name: string;
-    code: string;
-    description: string | null;
-    _count: { documents: number };
-};
+type DepartmentWithCount = Department & { _count: { documents: number } };
 
-export function DepartmentClientWrapper({ initialData }: { initialData: any[] }) {
+export function DepartmentClientWrapper({ initialData }: { initialData: DepartmentWithCount[] }) {
     const [open, setOpen] = useState(false);
 
-    const columns: ColumnDef<Department>[] = [
+    const columns: ColumnDef<DepartmentWithCount>[] = [
         {
             accessorKey: "code",
             header: "Mã PB",

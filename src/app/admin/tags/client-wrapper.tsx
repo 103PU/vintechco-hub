@@ -1,5 +1,7 @@
 'use client';
 
+import { Tag } from '@prisma/client';
+
 import { createTag, deleteTag } from '@/app/actions/admin-taxonomy';
 import { AdminTable } from '@/components/admin/admin-table';
 import { Button } from '@/components/ui/button';
@@ -11,10 +13,12 @@ import { Trash2, Plus } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-export function TagClientWrapper({ initialData }: { initialData: any[] }) {
+type TagWithCount = Tag & { _count: { documents: number } };
+
+export function TagClientWrapper({ initialData }: { initialData: TagWithCount[] }) {
     const [open, setOpen] = useState(false);
 
-    const columns: ColumnDef<any>[] = [
+    const columns: ColumnDef<TagWithCount>[] = [
         {
             accessorKey: "name",
             header: "Tên Thẻ",

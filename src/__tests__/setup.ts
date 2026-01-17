@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import '@testing-library/jest-dom';
 import { cleanup } from '@testing-library/react';
 import { afterEach, vi } from 'vitest';
@@ -24,6 +25,7 @@ vi.mock('next/navigation', () => ({
 
 // Mock Next.js image
 vi.mock('next/image', () => ({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     default: ({ src, alt, ...props }: any) => {
         return { type: 'img', props: { src, alt, ...props } };
     }
@@ -57,6 +59,7 @@ global.IntersectionObserver = class IntersectionObserver {
         return [];
     }
     unobserve() { }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
 } as any;
 
 // Mock ResizeObserver
@@ -65,4 +68,5 @@ global.ResizeObserver = class ResizeObserver {
     disconnect() { }
     observe() { }
     unobserve() { }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
 } as any;

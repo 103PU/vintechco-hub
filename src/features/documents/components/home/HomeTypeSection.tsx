@@ -1,5 +1,5 @@
-import { useState, Fragment, createElement, ElementType } from 'react';
-import { ChevronRight, ChevronUp, LayoutGrid, Minimize2 } from 'lucide-react';
+import { useState, Fragment, createElement } from 'react';
+import { ChevronRight, LayoutGrid, Minimize2 } from 'lucide-react';
 import { TypeGroup } from '../../utils/doc-grouping';
 import { HomeTagCompact, HomeTagExpanded } from './HomeTagSection';
 import { getDocumentTypeIcon } from '../../utils/ui-helpers';

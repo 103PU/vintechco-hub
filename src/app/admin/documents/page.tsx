@@ -15,7 +15,7 @@ async function getDocuments(): Promise<DocumentData[]> {
         updatedAt: doc.updatedAt.toISOString(),
         tags: doc.tags.map((t: Doc['tags'][number]) => t.tag),
         departments: doc.departments.map((d: Doc['departments'][number]) => d.department),
-        machineModels: doc.machineModels.map((m: any) => ({
+        machineModels: doc.machineModels.map((m) => ({
             name: m.machineModel.name,
             brand: m.machineModel.brand?.name || null
         }))

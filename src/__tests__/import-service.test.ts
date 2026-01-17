@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { ImportService } from '../lib/import/import-service';
 import { PrismaClient } from '@prisma/client';

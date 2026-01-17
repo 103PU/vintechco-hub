@@ -41,9 +41,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserGear, faHandSparkles, faMicrochip, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { ComponentType } from 'react';
 
+export type IconComponent = LucideIcon | ComponentType<{ className?: string; size?: number | string; strokeWidth?: number | string }>;
+
 // --- FONT AWESOME WRAPPER ---
 const createFaIcon = (iconDefinition: IconDefinition) => {
-  return function FontAwesomeWrapped({ size = 24, className }: { size?: number; className?: string }) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  return function FontAwesomeWrapped({ size = 24, className, strokeWidth }: { size?: number | string; className?: string; strokeWidth?: number | string }) {
     return (
       <div
         style={{ width: size, height: size, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
@@ -101,7 +104,7 @@ export function getTagColorStyles(tagName: string | undefined) {
 }
 
 // --- DOCUMENT TYPE ICONS ---
-export function getDocumentTypeIcon(typeName: string | undefined): LucideIcon | ComponentType<any> {
+export function getDocumentTypeIcon(typeName: string | undefined): IconComponent {
   const normalized = typeName?.toLowerCase() || '';
 
   if (normalized.includes('quy trình')) return BookOpen;
@@ -120,7 +123,7 @@ export function getDocumentTypeIcon(typeName: string | undefined): LucideIcon | 
 }
 
 // --- TAG ICONS ---
-export function getTagIcon(tagName: string | undefined): LucideIcon | ComponentType<any> {
+export function getTagIcon(tagName: string | undefined): IconComponent {
   const normalized = tagName?.toLowerCase() || '';
 
   // 1. Hardware & Peripherals

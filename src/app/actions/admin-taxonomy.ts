@@ -1,6 +1,6 @@
 'use server';
 
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { withRole, Role } from '@/lib/auth/rbac';
@@ -33,8 +33,8 @@ export const createBrand = withRole([Role.ADMIN], async (formData: FormData) => 
         await prisma.brand.create({ data: { name: validated.data.name } });
         revalidatePath('/admin/brands');
         return { success: true };
-    } catch (e: any) {
-        if (e.code === 'P2002') return { success: false, error: 'Thương hiệu đã tồn tại.' };
+    } catch (e) {
+        if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002') return { success: false, error: 'Thương hiệu đã tồn tại.' };
         return { success: false, error: 'Lỗi hệ thống.' };
     }
 });
@@ -75,8 +75,8 @@ export const createTag = withRole([Role.ADMIN], async (formData: FormData) => {
         await prisma.tag.create({ data: { name: validated.data.name } });
         revalidatePath('/admin/tags');
         return { success: true };
-    } catch (e: any) {
-        if (e.code === 'P2002') return { success: false, error: 'Thẻ đã tồn tại.' };
+    } catch (e) {
+        if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002') return { success: false, error: 'Thẻ đã tồn tại.' };
         return { success: false, error: 'Lỗi hệ thống.' };
     }
 });
