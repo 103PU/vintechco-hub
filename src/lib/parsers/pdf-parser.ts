@@ -9,8 +9,7 @@ export class PdfParser implements IFileParser {
         try {
             // Dynamic import to avoid DOMMatrix error on server-side
             // pdf-parse requires canvas which needs DOMMatrix polyfill
-            const pdfParseModule = await import('pdf-parse') as any;
-            const pdfParse = pdfParseModule.default || pdfParseModule;
+            const pdfParse = require('pdf-parse');
             const data = await pdfParse(buffer);
 
             // We store the raw text. PDF-to-HTML is often brittle.

@@ -88,7 +88,7 @@ export class ImportService {
 
         // 5. Transactional Save
         try {
-            const doc = await this.prisma.$transaction(async (tx) => {
+            const doc = await this.prisma.$transaction(async (tx: any) => {
                 // Upsert Asset
                 const asset = await tx.fileAsset.upsert({
                     where: { hash },
