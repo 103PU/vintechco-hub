@@ -25,7 +25,9 @@
     "import:data": "ts-node scripts/import-script.ts",
     "db:convert": "ts-node scripts/convert-types-to-tags.ts",
     "db:seed": "npx prisma db seed",
-    "db:cleanup": "ts-node scripts/cleanup-system.ts"
+    "db:seed": "npx prisma db seed",
+    "db:cleanup": "ts-node scripts/cleanup-system.ts",
+    "postinstall": "prisma generate"
   },
   "prisma": {
     "seed": "node --loader ts-node/esm prisma/seed.ts"
