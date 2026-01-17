@@ -1,25 +1,26 @@
-import { 
-  BookOpen, 
-  FileText, 
-  Settings, 
-  Database, 
-  Activity, 
-  Shield, 
-  Wrench, 
+
+import {
+  BookOpen,
+  FileText,
+  Settings,
+  Database,
+  Activity,
+  Shield,
+  Wrench,
   Code,
   Archive,
   Layers,
   Tag,
-  Hash,
-  AlertCircle,
+
+
   CheckCircle2,
   Cpu as LucideCpu,
   Server,
   Banknote,
   CalendarDays,
-  GraduationCap,
+
   ClipboardList,
-  Bookmark,
+
   Printer,
   ScanLine,
   Wifi,
@@ -32,27 +33,29 @@ import {
   AlertTriangle,
   Info,
   HelpCircle,
-  Router
+  Router,
+  LucideIcon
 } from 'lucide-react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserGear, faHandSparkles, faMicrochip } from '@fortawesome/free-solid-svg-icons';
+import { faUserGear, faHandSparkles, faMicrochip, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { ComponentType } from 'react';
 
 // --- FONT AWESOME WRAPPER ---
-const createFaIcon = (iconDefinition: any) => {
-    return function FontAwesomeWrapped({ size = 24, className }: { size?: number; className?: string }) {
-        return (
-            <div
-                style={{ width: size, height: size, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
-                className={className}
-            >
-                <FontAwesomeIcon
-                    icon={iconDefinition}
-                    style={{ width: '100%', height: '100%' }}
-                />
-            </div>
-        );
-    };
+const createFaIcon = (iconDefinition: IconDefinition) => {
+  return function FontAwesomeWrapped({ size = 24, className }: { size?: number; className?: string }) {
+    return (
+      <div
+        style={{ width: size, height: size, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+        className={className}
+      >
+        <FontAwesomeIcon
+          icon={iconDefinition}
+          style={{ width: '100%', height: '100%' }}
+        />
+      </div>
+    );
+  };
 };
 
 // Custom Icons
@@ -87,7 +90,7 @@ const TAG_COLORS = [
 
 export function getTagColorStyles(tagName: string | undefined) {
   if (!tagName) return { border: 'border-gray-300', bg: 'bg-gray-300', text: 'text-gray-600', lightBg: 'bg-gray-50', ring: 'ring-gray-300' };
-  
+
   // Simple hash function to consistently pick a color for a tag name
   let hash = 0;
   for (let i = 0; i < tagName.length; i++) {
@@ -98,7 +101,7 @@ export function getTagColorStyles(tagName: string | undefined) {
 }
 
 // --- DOCUMENT TYPE ICONS ---
-export function getDocumentTypeIcon(typeName: string | undefined) {
+export function getDocumentTypeIcon(typeName: string | undefined): LucideIcon | ComponentType<any> {
   const normalized = typeName?.toLowerCase() || '';
 
   if (normalized.includes('quy trình')) return BookOpen;
@@ -112,14 +115,14 @@ export function getDocumentTypeIcon(typeName: string | undefined) {
   if (normalized.includes('bảo mật') || normalized.includes('security')) return Shield;
   if (normalized.includes('lỗi') || normalized.includes('error')) return AlertTriangle;
   if (normalized.includes('hướng dẫn') || normalized.includes('help')) return HelpCircle;
-  
+
   return Archive; // Default
 }
 
 // --- TAG ICONS ---
-export function getTagIcon(tagName: string | undefined) {
+export function getTagIcon(tagName: string | undefined): LucideIcon | ComponentType<any> {
   const normalized = tagName?.toLowerCase() || '';
-  
+
   // 1. Hardware & Peripherals
   if (normalized.includes('in') || normalized.includes('printer') || normalized.includes('mực')) return Printer;
   if (normalized.includes('scan')) return ScanLine;
@@ -146,7 +149,7 @@ export function getTagIcon(tagName: string | undefined) {
   if (normalized.includes('giá') || normalized.includes('chi phí') || normalized.includes('bill') || normalized.includes('tiền')) return Banknote;
   if (normalized.includes('kế hoạch') || normalized.includes('lịch') || normalized.includes('deadlines')) return CalendarDays;
   if (normalized.includes('training') || normalized.includes('đào tạo') || normalized.includes('hướng dẫn')) return TrainingIcon; // Use FontAwesome
-  
+
   // 5. Specific Technical Tasks
   if (normalized.includes('vệ sinh') || normalized.includes('clean') || normalized.includes('bảo dưỡng')) return CleaningIcon; // Use FontAwesome
   if (normalized.includes('chip') || normalized.includes('reset')) return ChipIcon; // Use FontAwesome
@@ -154,6 +157,6 @@ export function getTagIcon(tagName: string | undefined) {
   // 6. Generic Process
   if (normalized.includes('bước') || normalized.includes('quy trình') || normalized.includes('checklist')) return ClipboardList;
   if (normalized.includes('cài đặt') || normalized.includes('setup')) return Settings;
-  
+
   return Tag; // Default generic tag icon
 }

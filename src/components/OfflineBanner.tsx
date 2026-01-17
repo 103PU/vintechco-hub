@@ -27,6 +27,7 @@ export function OfflineBanner({ isOnline, pendingSyncCount }: OfflineBannerProps
       const wasDismissed = localStorage.getItem('offline-banner-dismissed');
       // Only load dismissal state if still offline since last dismissal
       if (wasDismissed === 'true') {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setDismissed(true);
       }
     } else {
@@ -47,15 +48,15 @@ export function OfflineBanner({ isOnline, pendingSyncCount }: OfflineBannerProps
   }
 
   return (
-    <div 
+    <div
       className="bg-yellow-50 border-l-4 border-yellow-400 p-4 shadow-md"
       role="alert"
       aria-live="assertive"
     >
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-3 flex-1 min-w-0">
-          <WifiOff 
-            className="h-5 w-5 text-yellow-700 shrink-0" 
+          <WifiOff
+            className="h-5 w-5 text-yellow-700 shrink-0"
             aria-hidden="true"
           />
           <div className="flex-1 min-w-0">
@@ -69,7 +70,7 @@ export function OfflineBanner({ isOnline, pendingSyncCount }: OfflineBannerProps
             )}
           </div>
         </div>
-        
+
         <button
           onClick={handleDismiss}
           className="shrink-0 p-1 rounded-md hover:bg-yellow-100 transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"

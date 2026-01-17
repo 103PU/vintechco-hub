@@ -8,12 +8,14 @@ import { ClassificationService } from '../classification';
 import { uploadFile } from '../storage/s3';
 import slugify from 'slugify';
 
+import { ClassificationResult } from '../classification';
+
 // Define return type
 export interface ImportResult {
     status: 'skipped' | 'success' | 'error';
     documentId?: string;
     message?: string;
-    classification?: unknown; // Avoiding circular dependency complexity for now
+    classification?: ClassificationResult;
 }
 
 export class ImportService {
@@ -40,7 +42,7 @@ export class ImportService {
         });
 
         // 2. Classification
-        let classification;
+        let classification: ClassificationResult;
         try {
             const useAI = mode === 'full';
             classification = await this.classifier.classifyFromSegments(pathStack, fileName, useAI);
@@ -72,7 +74,7 @@ export class ImportService {
         if (parser) {
             try {
                 parsedContent = await parser.parse(fileContent, fileName, mimeType);
-            } catch (_e) {
+            } catch {
                 console.warn(`Parser failed for ${fileName}, falling back to default.`);
             }
         }
@@ -89,8 +91,7 @@ export class ImportService {
 
         // 5. Transactional Save
         try {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const doc = await this.prisma.$transaction(async (tx: any) => {
+            const doc = await this.prisma.$transaction(async (tx) => {
                 // Upsert Asset
                 const asset = await tx.fileAsset.upsert({
                     where: { hash },
@@ -198,7 +199,7 @@ export class ImportService {
     private getMimeType(filePath: string): string {
         // Simple mapping, rely on extension or mime package if needed
         const ext = path.extname(filePath).toLowerCase();
-        const map: any = {
+        const map: Record<string, string> = {
             '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             '.pdf': 'application/pdf'

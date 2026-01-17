@@ -11,7 +11,7 @@ export class ExcelParser implements IFileParser {
         try {
             const workbook = XLSX.read(buffer, { type: 'buffer' });
             let htmlContent = '';
-            const metadata: any = { sheets: [] };
+            const metadata: { sheets: string[] } = { sheets: [] };
 
             // Convert each sheet to an HTML table
             for (const sheetName of workbook.SheetNames) {

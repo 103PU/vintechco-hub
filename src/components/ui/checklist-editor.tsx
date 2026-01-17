@@ -135,7 +135,7 @@ export function ChecklistEditor({ initialSteps = [], onChange }: ChecklistEditor
                 >
                     <div className="bg-gray-50 p-4 rounded-md min-h-[100px]">
                         {steps.length === 0 && (
-                            <p className="text-center text-sm text-muted-foreground py-8">Chưa có bước nào. Nhấn "Thêm bước" để bắt đầu.</p>
+                            <p className="text-center text-sm text-muted-foreground py-8">Chưa có bước nào. Nhấn &quot;Thêm bước&quot; để bắt đầu.</p>
                         )}
                         {steps.map(step => (
                             <SortableItem

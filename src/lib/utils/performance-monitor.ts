@@ -135,9 +135,26 @@ export function logAPIPerformance(
 /**
  * Memory usage logger
  */
+// Non-standard Chrome extension
+interface PerformanceMemory {
+    usedJSHeapSize: number;
+    totalJSHeapSize: number;
+    jsHeapSizeLimit: number;
+}
+
+interface PerformanceWithMemory extends Performance {
+    memory?: PerformanceMemory;
+}
+
+/**
+ * Memory usage logger
+ */
 export function logMemoryUsage() {
-    if (typeof performance !== 'undefined' && (performance as any).memory) {
-        const memory = (performance as any).memory;
+    if (typeof performance !== 'undefined' && 'memory' in performance) {
+        const perf = performance as unknown as PerformanceWithMemory;
+        const memory = perf.memory;
+        if (!memory) return;
+
         const used = (memory.usedJSHeapSize / 1024 / 1024).toFixed(2);
         const total = (memory.totalJSHeapSize / 1024 / 1024).toFixed(2);
         const limit = (memory.jsHeapSizeLimit / 1024 / 1024).toFixed(2);

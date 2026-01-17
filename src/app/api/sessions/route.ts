@@ -16,9 +16,10 @@ export async function POST(request: NextRequest) {
         }
         const session = await SessionService.createSession(userId, docIds);
         return NextResponse.json(session);
-    } catch (e: any) {
+    } catch (e: unknown) {
         console.error('Create session error:', e);
-        return NextResponse.json({ error: e.message || 'Server error' }, { status: 500 });
+        const msg = e instanceof Error ? e.message : String(e);
+        return NextResponse.json({ error: msg || 'Server error' }, { status: 500 });
     }
 }
 
@@ -32,9 +33,10 @@ export async function PATCH(request: NextRequest) {
         }
         const item = await SessionService.updateItemProgress(sessionId, docId, progressJson);
         return NextResponse.json(item);
-    } catch (e: any) {
+    } catch (e: unknown) {
         console.error('Update item progress error:', e);
-        return NextResponse.json({ error: e.message || 'Server error' }, { status: 500 });
+        const msg = e instanceof Error ? e.message : String(e);
+        return NextResponse.json({ error: msg || 'Server error' }, { status: 500 });
     }
 }
 
@@ -48,8 +50,9 @@ export async function PUT(request: NextRequest) {
         }
         const session = await SessionService.completeSession(sessionId);
         return NextResponse.json(session);
-    } catch (e: any) {
+    } catch (e: unknown) {
         console.error('Complete session error:', e);
-        return NextResponse.json({ error: e.message || 'Server error' }, { status: 500 });
+        const msg = e instanceof Error ? e.message : String(e);
+        return NextResponse.json({ error: msg || 'Server error' }, { status: 500 });
     }
 }

@@ -1,8 +1,6 @@
-import { useState } from 'react';
-import { ChevronRight, Folder, FileText, Settings, Layers, Box } from 'lucide-react';
+import { Layers, Box, FileText } from 'lucide-react';
 import { CategoryGroup, FullDocument } from '../../utils/doc-grouping';
-import { cn } from '@/lib/utils';
-import { Badge } from '@/components/ui/badge';
+
 
 interface HomeCategorySectionProps {
     group: CategoryGroup;
@@ -40,7 +38,7 @@ export function HomeCategorySection({ group }: HomeCategorySectionProps) {
     );
 }
 
-function TopicRow({ topicGroup }: { topicGroup: { topic: any, docs: FullDocument[] } }) {
+function TopicRow({ topicGroup }: { topicGroup: { topic: { id: string, name: string } | null, docs: FullDocument[] } }) {
     const topicName = topicGroup.topic?.name || 'Chung';
 
     return (

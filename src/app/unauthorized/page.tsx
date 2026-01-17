@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function UnauthorizedPage() {
     return (
         <div className="flex min-h-screen items-center justify-center bg-gray-50">
@@ -10,18 +12,18 @@ export default function UnauthorizedPage() {
                     Bạn không có quyền truy cập vào trang này. Vui lòng liên hệ quản trị viên nếu bạn cho rằng đây là lỗi.
                 </p>
                 <div className="space-x-4">
-                    <a
+                    <Link
                         href="/"
                         className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                     >
                         Về trang chủ
-                    </a>
-                    <a
+                    </Link>
+                    <Link
                         href="/api/auth/signout"
                         className="inline-block px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
                     >
                         Đăng xuất
-                    </a>
+                    </Link>
                 </div>
             </div>
         </div>

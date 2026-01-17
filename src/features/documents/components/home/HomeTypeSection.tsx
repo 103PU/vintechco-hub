@@ -1,4 +1,4 @@
-import { useState, Fragment } from 'react';
+import { useState, Fragment, createElement, ElementType } from 'react';
 import { ChevronRight, ChevronUp, LayoutGrid, Minimize2 } from 'lucide-react';
 import { TypeGroup } from '../../utils/doc-grouping';
 import { HomeTagCompact, HomeTagExpanded } from './HomeTagSection';
@@ -16,7 +16,7 @@ export function HomeTypeSection({ group }: HomeTypeSectionProps) {
     const columns = useGridColumns();
 
     const typeName = group.type?.name || 'Chưa phân loại';
-    const Icon = getDocumentTypeIcon(group.type?.name);
+    const iconComponent = getDocumentTypeIcon(group.type?.name);
     const totalTags = group.tagGroups.length;
 
     // Compact View Limit: Show 1 row based on column count
@@ -52,7 +52,7 @@ export function HomeTypeSection({ group }: HomeTypeSectionProps) {
                         "p-2.5 rounded-xl shadow-md transition-all duration-300",
                         "bg-blue-600 shadow-blue-200 group-hover/header:scale-110 group-hover/header:rotate-3"
                     )}>
-                        <Icon className="w-6 h-6 text-white" strokeWidth={2} />
+                        {createElement(iconComponent, { className: "w-6 h-6 text-white", strokeWidth: 2 })}
                     </div>
                     <h2 className="text-xl font-extrabold text-gray-800 tracking-tight uppercase">
                         {typeName}

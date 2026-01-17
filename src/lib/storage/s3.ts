@@ -48,8 +48,7 @@ export async function ensureBucketExists() {
 
     } catch (error: unknown) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const err = error as any;
-        if (err.name === 'NotFound' || err.$metadata?.httpStatusCode === 404) {
+        if ((error as any).name === 'NotFound' || (error as any).$metadata?.httpStatusCode === 404) {
             // ... create logic ...
             try {
                 await s3Client.send(new CreateBucketCommand({ Bucket: S3_BUCKET }))
@@ -60,8 +59,10 @@ export async function ensureBucketExists() {
             }
         } else {
             console.warn("⚠️  S3 Unreachable (Timeout or Error). Switching to Dummy Local Mode.");
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            console.warn(`   Error: ${(error as any).message}`);
+
+            // Safe alignment with standard error property if available, or stringify
+            const msg = error instanceof Error ? error.message : String(error);
+            console.warn(`   Error: ${msg}`);
             isS3Available = false;
             // Do not throw, allow app to continue
         }

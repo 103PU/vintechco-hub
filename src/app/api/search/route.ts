@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma/client';
+import { Prisma } from '@prisma/client';
 import { normalizeVietnamese } from '@/lib/utils/vietnamese-text';
 
 export async function GET(request: Request) {
@@ -15,7 +16,15 @@ export async function GET(request: Request) {
         const take = parseInt(searchParams.get('take') || '20', 10);
 
         // Build the where clause dynamically
-        const where: any = {};
+        // Build the where clause dynamically
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // Build the where clause dynamically
+        const where: Prisma.DocumentWhereInput = {}; // Complex build, keeping any for now but localized or use strict type if possible
+        // Actually, let's use Prisma.DocumentWhereInput but it might be hard to satisfy all conditions dynamically without casting
+        // Reverting to localized suppression or better, fixing it properly.
+        // Let's try to type it partially or suppress it if it's too dynamic.
+        // The error was "Unexpected any".
+        // Let's use Prisma.DocumentWhereInput and casting where necessary or just standard object building.
 
         // Search in title or content if query is provided
         // Supports both original Vietnamese text and normalized text (without diacritics)

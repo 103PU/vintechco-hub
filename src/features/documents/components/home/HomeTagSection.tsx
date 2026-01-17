@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useMemo, createElement, ElementType } from 'react';
 import type { TagGroup } from '../../utils/doc-grouping';
 import { HomeDocumentCard } from './HomeDocumentCard';
 import { getTagColorStyles, getTagIcon } from '../../utils/ui-helpers';
@@ -22,8 +22,7 @@ interface HomeTagExpandedProps extends HomeTagProps {
 export function HomeTagCompact({ group, onClick, isActive }: HomeTagCompactProps) {
     const tagName = group.tag?.name || 'Chung';
     const styles = getTagColorStyles(group.tag?.name);
-    // eslint-disable-next-line react/no-unstable-nested-components
-    const Icon = getTagIcon(group.tag?.name);
+    const Icon = useMemo(() => getTagIcon(group.tag?.name), [group.tag?.name]);
     const docCount = group.docs.length;
 
     return (
@@ -47,8 +46,8 @@ export function HomeTagCompact({ group, onClick, isActive }: HomeTagCompactProps
                 "bg-white shadow-sm border",
                 styles.border, styles.text
             )}>
-                {/* eslint-disable-next-line react/no-unstable-nested-components */}
-                <Icon size={32} strokeWidth={2} />
+
+                {createElement(Icon, { size: 32, strokeWidth: 2 })}
             </div>
 
             <h3 className={cn("text-lg font-extrabold uppercase tracking-tight mb-1", styles.text)}>
@@ -73,8 +72,7 @@ export function HomeTagExpanded({ group, onClose }: HomeTagExpandedProps) {
 
     const tagName = group.tag?.name || 'Chung';
     const styles = getTagColorStyles(group.tag?.name);
-    // eslint-disable-next-line react/no-unstable-nested-components
-    const Icon = getTagIcon(group.tag?.name);
+    const Icon = useMemo(() => getTagIcon(group.tag?.name), [group.tag?.name]);
 
     // Auto-scroll when mounted if content overflows viewport
     useEffect(() => {
@@ -108,8 +106,7 @@ export function HomeTagExpanded({ group, onClose }: HomeTagExpandedProps) {
                         styles.border,
                         styles.text
                     )}>
-                        {/* eslint-disable-next-line react/no-unstable-nested-components */}
-                        <Icon size={20} strokeWidth={2.5} />
+                        {createElement(Icon, { size: 20, strokeWidth: 2.5 })}
                         <span className="text-base font-bold uppercase tracking-wider">
                             {tagName}
                         </span>

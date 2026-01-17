@@ -28,10 +28,10 @@ export default async function EditDocumentPage({ params }: EditDocumentPageProps
             <div className="mb-6">
                 <h1 className="text-3xl font-bold text-gray-800">Chỉnh sửa Quy trình</h1>
                 <p className="mt-1 text-gray-600">
-                    Cập nhật thông tin cho quy trình "{document.title}".
+                    Cập nhật thông tin cho quy trình &quot;{document.title}&quot;.
                 </p>
             </div>
-            <DocumentFormLoader 
+            <DocumentFormLoader
                 documentTypes={documentTypes}
                 allTags={allTags}
                 allDepartments={allDepartments}

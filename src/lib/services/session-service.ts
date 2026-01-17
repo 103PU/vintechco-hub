@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma/client';
-import { WorkSession, WorkSessionItem } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 
 export class SessionService {
 
@@ -38,7 +38,7 @@ export class SessionService {
      * @param documentId 
      * @param data { progress: any, status?: string }
      */
-    static async updateItemProgress(sessionId: string, documentId: string, data: { progress?: any, status?: 'PENDING' | 'IN_PROGRESS' | 'DONE' }) {
+    static async updateItemProgress(sessionId: string, documentId: string, data: { progress?: unknown, status?: 'PENDING' | 'IN_PROGRESS' | 'DONE' }) {
         // Find the specific item first
         const item = await prisma.workSessionItem.findFirst({
             where: { workSessionId: sessionId, documentId: documentId }
@@ -48,13 +48,13 @@ export class SessionService {
             throw new Error(`Item not found for session ${sessionId} and document ${documentId}`);
         }
 
-        const updateData: any = {};
+        const updateData: Prisma.WorkSessionItemUpdateInput = {};
         if (data.progress) {
             updateData.progressJson = JSON.stringify(data.progress);
         }
         if (data.status) {
             updateData.status = data.status;
-            
+
             // Auto timestamp
             if (data.status === 'IN_PROGRESS' && !item.startedAt) {
                 updateData.startedAt = new Date();
@@ -63,9 +63,9 @@ export class SessionService {
                 updateData.completedAt = new Date();
             }
         } else if (data.progress && item.status === 'PENDING') {
-             // specific logic: if updating progress, switch to IN_PROGRESS
-             updateData.status = 'IN_PROGRESS';
-             if (!item.startedAt) updateData.startedAt = new Date();
+            // specific logic: if updating progress, switch to IN_PROGRESS
+            updateData.status = 'IN_PROGRESS';
+            if (!item.startedAt) updateData.startedAt = new Date();
         }
 
         return prisma.workSessionItem.update({
@@ -86,7 +86,7 @@ export class SessionService {
             }
         });
     }
-    
+
     /**
      * Get active session for user
      */

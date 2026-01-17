@@ -17,7 +17,9 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async session({ session, token }) {
       if (token && session.user) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (session.user as any).id = token.id;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (session.user as any).role = token.role ?? 'TECHNICIAN';
       }
       return session;
@@ -26,13 +28,13 @@ export const authOptions: AuthOptions = {
       if (user) {
         token.id = user.id;
       }
-      
+
       const dbUser = await prisma.user.findUnique({
         where: { id: token.id as string },
       });
 
       token.role = dbUser?.role || 'TECHNICIAN';
-      
+
       return token;
     },
   },

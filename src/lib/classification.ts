@@ -38,9 +38,11 @@ export class ClassificationService {
             throw new Error(`Invalid Path Structure. Too shallow. Expected at least: Dept/Category/Topic. Got: ${pathSegments.join('/')}`);
         }
 
-        let [deptName, catName, topicName] = pathSegments;
+        const deptName = pathSegments[0];
+        let catName = pathSegments[1];
+        let topicName = pathSegments[2];
         const brandNameCandidate = pathSegments.length > 3 ? pathSegments[3] : undefined;
-        const modelNameCandidate = pathSegments.length > 4 ? pathSegments[4] : undefined;
+        // const modelNameCandidate = pathSegments.length > 4 ? pathSegments[4] : undefined;
         let extraTags = pathSegments.slice(5);
 
         let finalBrandName: string | undefined;
@@ -130,12 +132,12 @@ export class ClassificationService {
                 topic = await this.prisma.documentTopic.create({
                     data: { name: topicName, slug: topicSlug, categoryId: category.id }
                 });
-            } catch (e) {
+            } catch (error) {
                 // Race condition: Topic created by another process
                 topic = await this.prisma.documentTopic.findFirst({
                     where: { categoryId: category.id, slug: topicSlug }
                 });
-                if (!topic) throw e;
+                if (!topic) throw error;
             }
         }
 
@@ -172,7 +174,7 @@ export class ClassificationService {
                                 where: { id: foundModel.id },
                                 data: { brandId: brand.id }
                             });
-                        } catch (e) {
+                        } catch {
                             // Ignore race condition
                         }
                     }
@@ -183,7 +185,7 @@ export class ClassificationService {
                             data: { name: seriesName, brandId: brand.id }
                         });
                         models.push(newModel);
-                    } catch (e) {
+                    } catch {
                         // Race condition handling
                         const retry = await this.prisma.machineModel.findUnique({ where: { name: seriesName } });
                         if (retry) models.push(retry);

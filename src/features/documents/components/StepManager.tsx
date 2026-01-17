@@ -2,20 +2,20 @@
 
 import React, { useState } from 'react';
 import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragEndEvent,
+    DndContext,
+    closestCenter,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors,
+    DragEndEvent,
 } from '@dnd-kit/core';
 import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-  useSortable
+    arrayMove,
+    SortableContext,
+    sortableKeyboardCoordinates,
+    verticalListSortingStrategy,
+    useSortable
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical, Trash2 } from 'lucide-react';
@@ -32,7 +32,7 @@ interface StepManagerProps {
 }
 
 interface SortableStepItemProps {
-    step: { id?: string, description: string, order: number, localId: string };
+    step: LocalStep;
     index: number;
     onDescriptionChange: (id: string, value: string) => void;
     onDelete: (id: string) => void;
@@ -56,15 +56,15 @@ function SortableStepItem({ step, index, onDescriptionChange, onDelete }: Sortab
     };
 
     return (
-        <div 
-            ref={setNodeRef} 
-            style={style} 
+        <div
+            ref={setNodeRef}
+            style={style}
             className={`flex items-start gap-3 p-3 rounded-lg border bg-white transition-shadow ${isDragging ? 'shadow-lg border-blue-400' : 'shadow-sm border-gray-200'}`}
         >
             <span {...attributes} {...listeners} className="cursor-grab p-1 mt-1 hover:bg-gray-100 rounded">
                 <GripVertical size={20} className="text-gray-400" />
             </span>
-            
+
             <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold text-sm shrink-0 mt-0.5">
                 {index + 1}
             </div>
@@ -77,7 +77,7 @@ function SortableStepItem({ step, index, onDescriptionChange, onDelete }: Sortab
                     placeholder={`Mô tả cho bước ${index + 1}...`}
                 />
             </div>
-            
+
             <Button variant="ghost" size="icon" onClick={() => onDelete(step.localId)} className="text-gray-400 hover:text-red-600 hover:bg-red-50">
                 <Trash2 size={18} />
             </Button>
@@ -144,7 +144,7 @@ export function StepManager({ documentId, initialSteps }: StepManagerProps) {
             } else {
                 toast.error(res.error || 'Không thể lưu các bước.');
             }
-        } catch (e) {
+        } catch (_e) {
             toast.error('Đã có lỗi khi lưu.');
         } finally {
             setIsSaving(false);
@@ -154,7 +154,7 @@ export function StepManager({ documentId, initialSteps }: StepManagerProps) {
     // Update the mapping to pass index
     return (
         <div className="space-y-6 pt-8 mt-8 border-t border-gray-200">
-             <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center">
                 <div>
                     <h2 className="text-xl font-bold text-gray-800">Quy trình thực hiện</h2>
                     <p className="text-sm text-gray-500">Định nghĩa các bước cần làm theo thứ tự.</p>
@@ -164,15 +164,15 @@ export function StepManager({ documentId, initialSteps }: StepManagerProps) {
                         {isSaving ? 'Đang lưu...' : 'Lưu thay đổi'}
                     </Button>
                 </div>
-             </div>
+            </div>
 
             <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
                 <SortableContext items={steps.map(s => s.localId)} strategy={verticalListSortingStrategy}>
                     <div className="space-y-3">
                         {steps.map((step, index) => (
-                            <SortableStepItem 
-                                key={step.localId} 
-                                step={step as any} 
+                            <SortableStepItem
+                                key={step.localId}
+                                step={step}
                                 index={index}
                                 onDescriptionChange={handleDescriptionChange}
                                 onDelete={handleDelete}
@@ -193,7 +193,7 @@ export function StepManager({ documentId, initialSteps }: StepManagerProps) {
                     placeholder="Nhập nội dung bước mới và nhấn Enter..."
                     value={newStep}
                     onChange={(e) => setNewStep(e.target.value)}
-                    onKeyDown={(e) => { if (e.key === 'Enter') handleAddStep()}}
+                    onKeyDown={(e) => { if (e.key === 'Enter') handleAddStep() }}
                     className="shadow-sm"
                 />
                 <Button onClick={handleAddStep}>Thêm bước</Button>

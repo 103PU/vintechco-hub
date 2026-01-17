@@ -13,13 +13,14 @@ export async function logAudit({
     entity: string
     entityId: string
     actorId?: string
-    payload?: any
+    payload?: Record<string, unknown> | unknown
 }) {
     try {
         let effectiveActorId = actorId
         if (!effectiveActorId) {
             // Try to get session if not provided
             const session = await getServerSession(authOptions)
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             effectiveActorId = (session?.user as any)?.id
         }
 
@@ -34,7 +35,7 @@ export async function logAudit({
                 entity,
                 entityId,
                 actorId: effectiveActorId,
-                payload: payload ? payload : undefined,
+                payload: payload ? JSON.stringify(payload) : undefined,
             },
         })
     } catch (error) {

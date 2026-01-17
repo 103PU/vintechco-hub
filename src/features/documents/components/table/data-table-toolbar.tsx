@@ -51,7 +51,7 @@ export function DataTableToolbar<TData>({
     const isFiltered = table.getState().columnFilters.length > 0
 
     const handleDeleteSelected = async () => {
-        const selectedIds = table.getFilteredSelectedRowModel().rows.map((row) => (row.original as any).id);
+        const selectedIds = table.getFilteredSelectedRowModel().rows.map((row) => (row.original as any).id); // eslint-disable-line @typescript-eslint/no-explicit-any
         const result = await deleteDocuments(selectedIds);
         if (result.success) {
             toast.success(`Đã xóa thành công ${selectedIds.length} mục.`);

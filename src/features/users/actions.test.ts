@@ -1,7 +1,8 @@
 import { updateUserRole, deleteUser } from './actions';
+import { Role } from '@/lib/auth/rbac';
 import { prisma } from '@/lib/prisma/client';
 import { getServerSession } from 'next-auth';
-import { Role } from '@/lib/auth/rbac';
+
 
 // Mock dependencies
 jest.mock('@/lib/prisma/client', () => ({
@@ -34,10 +35,10 @@ describe('User Actions Security Verification', () => {
     it('Should BLOCK non-admin users', async () => {
       // Mock TECHNICIAN session
       (getServerSession as jest.Mock).mockResolvedValue({
-        user: { id: 'tech-1', role: 'TECHNICIAN' }
+        user: { id: 'tech-1', role: Role.TECHNICIAN }
       });
 
-      const result = await updateUserRole('target-user', 'ADMIN');
+      const result = await updateUserRole('target-user', Role.ADMIN);
 
       expect(result.success).toBe(false);
       expect(result.error).toBe('Unauthorized');
@@ -47,10 +48,10 @@ describe('User Actions Security Verification', () => {
     it('Should BLOCK admin from modifying themselves', async () => {
       // Mock ADMIN session
       (getServerSession as jest.Mock).mockResolvedValue({
-        user: { id: 'admin-1', role: 'ADMIN' }
+        user: { id: 'admin-1', role: Role.ADMIN }
       });
 
-      const result = await updateUserRole('admin-1', 'TECHNICIAN'); // Target same ID
+      const result = await updateUserRole('admin-1', Role.TECHNICIAN); // Target same ID
 
       expect(result.success).toBe(false);
       expect(result.error).toContain('không thể tự thay đổi');
@@ -60,12 +61,12 @@ describe('User Actions Security Verification', () => {
     it('Should ALLOW admin to modify other users', async () => {
       // Mock ADMIN session
       (getServerSession as jest.Mock).mockResolvedValue({
-        user: { id: 'admin-1', role: 'ADMIN' }
+        user: { id: 'admin-1', role: Role.ADMIN }
       });
 
       (prisma.user.update as jest.Mock).mockResolvedValue({});
 
-      const result = await updateUserRole('other-user', 'ADMIN');
+      const result = await updateUserRole('other-user', Role.ADMIN);
 
       expect(result.success).toBe(true);
       expect(prisma.user.update).toHaveBeenCalled();
@@ -75,7 +76,7 @@ describe('User Actions Security Verification', () => {
   describe('deleteUser', () => {
     it('Should BLOCK non-admin users', async () => {
       (getServerSession as jest.Mock).mockResolvedValue({
-        user: { id: 'tech-1', role: 'TECHNICIAN' }
+        user: { id: 'tech-1', role: Role.TECHNICIAN }
       });
 
       const result = await deleteUser('target-user');
@@ -87,7 +88,7 @@ describe('User Actions Security Verification', () => {
 
     it('Should ALLOW admin to delete other users', async () => {
       (getServerSession as jest.Mock).mockResolvedValue({
-        user: { id: 'admin-1', role: 'ADMIN' }
+        user: { id: 'admin-1', role: Role.ADMIN }
       });
 
       (prisma.user.delete as jest.Mock).mockResolvedValue({});

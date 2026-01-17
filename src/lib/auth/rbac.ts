@@ -211,7 +211,7 @@ export async function canPerform(permission: Permission): Promise<boolean> {
  *   // Only admins can execute this
  * });
  */
-export function withRole<T extends any[], R>(
+export function withRole<T extends unknown[], R>(
     allowedRoles: Role[],
     action: (...args: T) => Promise<R>
 ) {
@@ -229,7 +229,7 @@ export function withRole<T extends any[], R>(
  *   // Only users with documents:create permission can execute
  * });
  */
-export function withPermission<T extends any[], R>(
+export function withPermission<T extends unknown[], R>(
     requiredPermissions: Permission | Permission[],
     action: (...args: T) => Promise<R>
 ) {

@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenerativeAI, GenerativeModel } from '@google/generative-ai';
 
 export interface AIClassificationResult {
     brand?: string;
@@ -10,7 +10,7 @@ export interface AIClassificationResult {
 
 export class AIClassificationService {
     private genAI: GoogleGenerativeAI;
-    private model: any;
+    private model: GenerativeModel;
 
     constructor(apiKey: string) {
         this.genAI = new GoogleGenerativeAI(apiKey);
@@ -66,8 +66,10 @@ export class AIClassificationService {
 
                 return JSON.parse(cleanJson) as AIClassificationResult;
 
-            } catch (error: any) {
-                if (error.status === 429 || (error.message && error.message.includes('429'))) {
+            } catch (error: unknown) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const err = error as any;
+                if (err.status === 429 || (err.message && err.message.includes('429'))) {
                     retries++;
                     const waitTime = retries * 5000; // 5s, 10s, 15s
                     console.log(`⚠️  Rate Limit hit. Waiting ${waitTime / 1000}s...`);

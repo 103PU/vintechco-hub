@@ -2,7 +2,7 @@
 
 import useSWR from 'swr';
 import { useDebounce } from 'use-debounce';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 interface SearchParams {
     q?: string;
@@ -16,6 +16,7 @@ interface SearchParams {
 }
 
 interface SearchResult {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     documents: any[];
     totalCount: number;
     skip: number;

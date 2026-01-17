@@ -12,15 +12,11 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    "skills/**",
+    "**/USAGE_EXAMPLES.ts",
+    "**/USAGE_EXAMPLES.tsx",
+    "**/EDGE_CASES_USAGE.tsx"
   ]),
-  {
-    rules: {
-      "@typescript-eslint/no-explicit-any": "warn",
-      "react/no-unescaped-entities": "off",
-      "@typescript-eslint/no-unused-vars": "warn",
-      "@typescript-eslint/no-require-imports": "off"
-    }
-  }
 ]);
 
 export default eslintConfig;

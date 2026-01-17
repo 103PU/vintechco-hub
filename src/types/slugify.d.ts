@@ -11,7 +11,7 @@ declare module 'slugify' {
     function slugify(string: string, options?: SlugifyOptions | string): string;
 
     namespace slugify {
-        function extend(args: { [key: string]: any }): void;
+        function extend(args: { [key: string]: unknown }): void;
     }
 
     export = slugify; // CommonJS export for slugify

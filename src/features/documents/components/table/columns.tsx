@@ -324,7 +324,7 @@ export const columns: ColumnDef<DocumentData>[] = [
                             <AlertDialogTitle>Bạn có chắc chắn không?</AlertDialogTitle>
                             <AlertDialogDescription>
                                 Hành động này không thể được hoàn tác. Thao tác này sẽ xóa vĩnh viễn quy trình
-                                <span className="font-bold"> "{document.title}"</span>.
+                                <span className="font-bold"> &quot;{document.title}&quot;</span>.
                             </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>

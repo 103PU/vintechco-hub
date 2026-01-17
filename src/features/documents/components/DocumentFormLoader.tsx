@@ -7,7 +7,7 @@ type SimpleDocumentType = { id: string; name: string }
 type SimpleDepartment = { id: string; name: string }
 type SimpleMachineModel = { id: string; name: string }
 
-const DocumentForm = dynamic(() => import('./DocumentForm').then(mod => mod.DocumentForm), { 
+const DocumentForm = dynamic(() => import('./DocumentForm').then(mod => mod.DocumentForm), {
     ssr: false,
     loading: () => <p>Đang tải trình soạn thảo...</p>
 });
@@ -17,7 +17,15 @@ interface DocumentFormLoaderProps {
     allTags: SimpleTag[];
     allDepartments: SimpleDepartment[];
     allMachineModels: SimpleMachineModel[];
-    initialData?: any;
+    initialData?: {
+        id: string;
+        title: string;
+        content: string;
+        documentTypeId: string | null;
+        tags?: { tagId: string }[];
+        departments?: { departmentId: string }[];
+        machineModels?: { machineModelId: string }[];
+    };
 }
 
 export function DocumentFormLoader({ documentTypes, allTags, allDepartments, allMachineModels, initialData }: DocumentFormLoaderProps) {

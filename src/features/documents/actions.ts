@@ -179,7 +179,7 @@ export async function createTag(name: string) {
     try {
         await prisma.tag.create({ data: { name } });
         return { success: true };
-    } catch (error) {
+    } catch (_error) {
         return { success: false, error: 'Failed to create tag' };
     }
 }
@@ -188,7 +188,7 @@ export async function updateTag(id: string, name: string) {
     try {
         await prisma.tag.update({ where: { id }, data: { name } });
         return { success: true };
-    } catch (error) {
+    } catch (_error) {
         return { success: false, error: 'Failed to update tag' };
     }
 }
@@ -197,7 +197,7 @@ export async function deleteTag(id: string) {
     try {
         await prisma.tag.delete({ where: { id } });
         return { success: true };
-    } catch (error) {
+    } catch (_error) {
         return { success: false, error: 'Failed to delete tag' };
     }
 }
@@ -266,7 +266,7 @@ export async function createDepartment(name: string) {
     try {
         await prisma.department.create({ data: { name } });
         return { success: true };
-    } catch (error) {
+    } catch (_error) {
         return { success: false, error: 'Failed to create department' };
     }
 }
@@ -275,7 +275,7 @@ export async function updateDepartment(id: string, name: string) {
     try {
         await prisma.department.update({ where: { id }, data: { name } });
         return { success: true };
-    } catch (error) {
+    } catch (_error) {
         return { success: false, error: 'Failed to update department' };
     }
 }
@@ -284,7 +284,7 @@ export async function deleteDepartment(id: string) {
     try {
         await prisma.department.delete({ where: { id } });
         return { success: true };
-    } catch (error) {
+    } catch (_error) {
         return { success: false, error: 'Failed to delete department' };
     }
 }
@@ -504,7 +504,7 @@ export async function deleteDocumentType(id: string) {
     try {
         await prisma.documentType.delete({ where: { id } });
         return { success: true };
-    } catch (error) {
+    } catch (_error) {
         return { success: false, error: 'Failed to delete document type' };
     }
 }
