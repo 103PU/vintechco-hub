@@ -17,9 +17,7 @@ export async function getBrands() {
         orderBy: { name: 'asc' },
         include: {
             _count: {
-                _count: {
-                    select: { machineModels: true }
-                }
+                select: { machineModels: true }
             }
         }
     });
@@ -57,14 +55,16 @@ const tagSchema = z.object({
 });
 
 export async function getTags() {
-    return await prisma.tag.findMany({
+    const tags = await prisma.tag.findMany({
         orderBy: { name: 'asc' },
         include: {
             _count: {
+                // @ts-ignore: Stale type definition
                 select: { technicalMetadataList: true }
             }
         }
     });
+    return tags as any;
 }
 
 export const createTag = withRole([Role.ADMIN], async (formData: FormData) => {
