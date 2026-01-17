@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createDocument, updateDocument, updateDocumentTags } from './actions';
 import { prisma } from '@/lib/prisma/client';
 import { getServerSession } from 'next-auth';

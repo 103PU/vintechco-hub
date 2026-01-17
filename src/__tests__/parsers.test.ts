@@ -29,7 +29,7 @@ vi.mock('pdf-parse', () => {
         text: 'Mock PDF Content',
         info: {}
     });
-    // @ts-ignore
+    // @ts-expect-error - mocking readonly property
     mockPdf.default = mockPdf;
     return mockPdf;
 });

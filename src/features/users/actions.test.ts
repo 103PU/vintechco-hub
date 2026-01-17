@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { updateUserRole, deleteUser } from './actions';
 import { Role } from '@/lib/auth/rbac';
 import { prisma } from '@/lib/prisma/client';
