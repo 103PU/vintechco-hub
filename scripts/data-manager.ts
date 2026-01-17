@@ -129,24 +129,30 @@ async function processFolderRecursive(currentPath: string, pathStack: string[], 
 
             RUN_STATS.processed++;
             console.log(`   Processing: ${item.name}...`);
-            const result = await importService.processFile(fullPath, pathStack, undefined, mode);
 
-            if (result.status === 'success') {
-                console.log(`     ✅ Imported: [ID: ${result.documentId}]`);
-                RUN_STATS.success++;
+            try {
+                const result = await importService.processFile(fullPath, pathStack, undefined, mode);
 
-                // Track Classification Source
-                const source = result.classification?.source;
-                if (source === 'AI') RUN_STATS.aiClassified++;
-                else if (source === 'Hybrid') RUN_STATS.hybridClassified++;
-                else if (source === 'Regex') RUN_STATS.regexClassified++;
-                else RUN_STATS.heuristicClassified++;
+                if (result.status === 'success') {
+                    console.log(`     ✅ Imported: [ID: ${result.documentId}]`);
+                    RUN_STATS.success++;
 
-            } else if (result.status === 'skipped') {
-                console.log(`     ⏭️  Skipped: ${result.message}`);
-                RUN_STATS.skipped++;
-            } else {
-                console.error(`     ❌ Error: ${result.message}`);
+                    // Track Classification Source
+                    const source = result.classification?.source;
+                    if (source === 'AI') RUN_STATS.aiClassified++;
+                    else if (source === 'Hybrid') RUN_STATS.hybridClassified++;
+                    else if (source === 'Regex') RUN_STATS.regexClassified++;
+                    else RUN_STATS.heuristicClassified++;
+
+                } else if (result.status === 'skipped') {
+                    console.log(`     ⏭️  Skipped: ${result.message}`);
+                    RUN_STATS.skipped++;
+                } else {
+                    console.error(`     ❌ Error: ${result.message}`);
+                    RUN_STATS.errors++;
+                }
+            } catch (err: any) {
+                console.error(`     ❌ CRITICAL ERROR: ${err.message}`);
                 RUN_STATS.errors++;
             }
         }
