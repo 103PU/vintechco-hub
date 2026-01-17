@@ -5,6 +5,8 @@ import { NextAuthProvider } from "@/components/NextAuthProvider";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Analytics } from "@vercel/analytics/react";
 
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -24,6 +26,7 @@ export default function RootLayout({
           <ErrorBoundary>
             {children}
             <Analytics />
+            <SpeedInsights />
           </ErrorBoundary>
         </NextAuthProvider>
       </body>
