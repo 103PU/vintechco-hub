@@ -28,7 +28,7 @@
     "db:cleanup": "ts-node scripts/cleanup-system.ts"
   },
   "prisma": {
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "node --loader ts-node/esm prisma/seed.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.962.0",
