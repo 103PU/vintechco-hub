@@ -8,9 +8,10 @@ import { ClassificationService } from '../lib/classification';
 vi.mock('@prisma/client', () => {
     return {
         PrismaClient: class {
-            fileAsset = { findUnique: vi.fn(), upsert: vi.fn() };
-            document = { findFirst: vi.fn(), upsert: vi.fn() };
-            tag = { upsert: vi.fn() };
+            fileAsset = { findUnique: vi.fn(), upsert: vi.fn().mockResolvedValue({ id: 'asset-1', storagePath: 'path' }) };
+            document = { findFirst: vi.fn(), upsert: vi.fn().mockResolvedValue({ id: 'doc-1' }) };
+            tag = { upsert: vi.fn().mockResolvedValue({ id: 'tag-1' }) };
+            user = { findFirst: vi.fn().mockResolvedValue({ id: 'system-user' }), create: vi.fn() };
             $transaction = vi.fn((callback) => callback(this));
             $disconnect = vi.fn();
         }
@@ -24,7 +25,7 @@ vi.mock('../lib/classification', () => {
                 topic: { id: 'topic-1', name: 'Topic 1' },
                 category: { id: 'cat-1', name: 'Cat 1' },
                 department: { id: 'dept-1', name: 'Dept 1' },
-                model: { id: 'model-1', name: 'Model 1' },
+                models: [{ id: 'model-1', name: 'Model 1' }],
                 tags: ['tag1']
             });
         }

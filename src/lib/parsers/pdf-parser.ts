@@ -36,7 +36,8 @@ ${data.text}
             };
         } catch (error) {
             console.error('PdfParser Error:', error);
-            throw new Error('Failed to parse PDF file.');
+            const msg = error instanceof Error ? error.message : String(error);
+            throw new Error(`Failed to parse PDF file: ${msg}`);
         }
     }
 }
