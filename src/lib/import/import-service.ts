@@ -111,12 +111,13 @@ export class ImportService {
                 }
 
                 // Upsert Document
+                const systemAuthId = await this.getSystemUser();
+
                 const newDoc = await tx.document.upsert({
                     where: { id: existingDoc?.id || "new-id-placeholder" },
-                    update: {}, // In future we might want to update content if file changed but title/topic same? 
-                    // But here we rely on hash check above.
+                    update: {},
                     create: {
-                        title,
+                        title: title,
                         content: parsedContent.content || '',
                         originalFilePath: filePath,
                         updatedAt: new Date(),
@@ -139,7 +140,7 @@ export class ImportService {
                                 title: title,
                                 content: parsedContent.content || '',
                                 fileAssetId: asset.id,
-                                authorId: 'system' // TODO: Pass in author ID
+                                authorId: systemAuthId
                             }
                         },
                         fileAssets: {
@@ -151,7 +152,7 @@ export class ImportService {
                 return newDoc;
             }, {
                 maxWait: 5000,
-                timeout: 30000 // Increased to 30s
+                timeout: 30000
             });
 
             return { status: 'success', documentId: doc.id, classification: classification };
@@ -159,6 +160,31 @@ export class ImportService {
         } catch (err: any) {
             return { status: 'error', message: `DB Transaction failed: ${err.message}` };
         }
+    }
+
+    private async getSystemUser(): Promise<string> {
+        // Try to find an existing system user or the first admin
+        const systemUser = await this.prisma.user.findFirst({
+            where: { email: 'system@vitechco.com' }
+        });
+        if (systemUser) return systemUser.id;
+
+        // Fallback: Find ANY admin to be the author
+        const admin = await this.prisma.user.findFirst({
+            where: { role: 'ADMIN' }
+        });
+        if (admin) return admin.id;
+
+        // Fallback: Create a System User if totally empty
+        const newUser = await this.prisma.user.create({
+            data: {
+                name: 'System Import',
+                email: 'system@vitechco.com',
+                role: 'ADMIN',
+                createdAt: new Date(),
+            }
+        });
+        return newUser.id;
     }
 
     // Helpers
