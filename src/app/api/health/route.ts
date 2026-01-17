@@ -21,19 +21,20 @@ export async function GET() {
             timestamp: new Date().toISOString(),
             uptime: process.uptime(),
             database: 'connected',
-            environment: process.env.NODE_ENV || 'development',
-            version: process.env.APP_VERSION || '0.1.0',
+            ...versionInfo, // Include version and environment info from getVersionInfo
         };
 
         return NextResponse.json(healthStatus, { status: 200 });
     } catch (error) {
+        const versionInfo = getVersionInfo(); // Get version info even on error for consistency
+
         const errorStatus = {
             status: 'unhealthy',
             timestamp: new Date().toISOString(),
             uptime: process.uptime(),
             database: 'disconnected',
             error: error instanceof Error ? error.message : 'Unknown error',
-            environment: process.env.NODE_ENV || 'development',
+            ...versionInfo, // Include version and environment info from getVersionInfo
         };
 
         return NextResponse.json(errorStatus, { status: 503 });
