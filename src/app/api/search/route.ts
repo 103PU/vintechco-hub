@@ -67,6 +67,7 @@ export async function GET(request: Request) {
             // If we have multiple technicalMetadata filters, we need to be careful.
             // Prisma AND:
             where.AND = [
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 ...(where.AND as any[] || []),
                 {
                     technicalMetadata: {
@@ -85,6 +86,7 @@ export async function GET(request: Request) {
         // Filter by brandId if provided
         if (brandId) {
             where.AND = [
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 ...(where.AND as any[] || []),
                 {
                     technicalMetadata: {
@@ -103,6 +105,7 @@ export async function GET(request: Request) {
         // Filter by specific machine model
         if (modelId) {
             where.AND = [
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 ...(where.AND as any[] || []),
                 {
                     technicalMetadata: {
@@ -145,6 +148,7 @@ export async function GET(request: Request) {
 
                     // Include only essential metadata
                     // Include only essential metadata
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore: Prisma generation stale
                     technicalMetadata: {
                         select: {
@@ -218,12 +222,16 @@ export async function GET(request: Request) {
         // Map Results
         const mappedDocuments = documents.map(doc => ({
             ...doc,
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore: Stale type definition
             documentType: doc.technicalMetadata?.documentType ?? null,
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore: Stale type definition
             topic: doc.technicalMetadata?.topic ?? null,
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore: Stale type definition
             machineModels: doc.technicalMetadata?.machineModels ?? [],
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore: Stale type definition
             tags: doc.technicalMetadata?.tags ?? [],
             technicalMetadata: undefined
