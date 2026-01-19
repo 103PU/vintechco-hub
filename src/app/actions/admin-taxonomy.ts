@@ -59,11 +59,13 @@ export async function getTags() {
         orderBy: { name: 'asc' },
         include: {
             _count: {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore: Stale type definition
                 select: { technicalMetadataList: true }
             }
         }
     });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return tags as any;
 }
 
