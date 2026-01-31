@@ -10,8 +10,15 @@ vi.mock('@prisma/client', () => {
         PrismaClient: class {
             fileAsset = { findUnique: vi.fn(), upsert: vi.fn().mockResolvedValue({ id: 'asset-1', storagePath: 'path' }) };
             document = { findFirst: vi.fn(), upsert: vi.fn().mockResolvedValue({ id: 'doc-1' }) };
-            tag = { upsert: vi.fn().mockResolvedValue({ id: 'tag-1' }) };
+            tag = { upsert: vi.fn().mockResolvedValue({ id: 'tag-1' }), findMany: vi.fn().mockResolvedValue([{ id: 'tag-1', name: 'tag1' }]) };
             user = { findFirst: vi.fn().mockResolvedValue({ id: 'system-user' }), create: vi.fn() };
+            technicalMetadata = {
+                upsert: vi.fn(),
+                findUniqueOrThrow: vi.fn().mockResolvedValue({ id: 'meta-id' }),
+                findUnique: vi.fn().mockResolvedValue({ id: 'meta-id' })
+            };
+            documentOnMachineModel = { deleteMany: vi.fn(), createMany: vi.fn() };
+            documentOnTag = { deleteMany: vi.fn(), createMany: vi.fn() };
             $transaction = vi.fn((callback) => callback(this));
             $disconnect = vi.fn();
         }

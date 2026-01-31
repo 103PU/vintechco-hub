@@ -5,22 +5,43 @@ import { getServerSession } from 'next-auth';
 import { vi, describe, beforeEach, it, expect } from 'vitest';
 
 // Mock the dependencies
-vi.mock('@/lib/prisma/client', () => ({
-  prisma: {
+vi.mock('@/lib/prisma/client', () => {
+  const mockPrisma = {
     document: {
       create: vi.fn(),
       update: vi.fn(),
+      delete: vi.fn(),
+      deleteMany: vi.fn(),
     },
     tag: {
       upsert: vi.fn(),
+      findMany: vi.fn(),
     },
-    $transaction: vi.fn((callback) => callback(prisma)),
+    technicalMetadata: {
+      create: vi.fn(),
+      upsert: vi.fn(),
+      findUnique: vi.fn(),
+      findUniqueOrThrow: vi.fn().mockResolvedValue({ id: 'meta-id' }),
+    },
     documentOnTag: {
       deleteMany: vi.fn(),
       createMany: vi.fn(),
-    }
-  },
-}));
+    },
+    documentOnDepartment: {
+      deleteMany: vi.fn(),
+      createMany: vi.fn(),
+    },
+    documentOnMachineModel: {
+      deleteMany: vi.fn(),
+      createMany: vi.fn(),
+    },
+    department: {
+      upsert: vi.fn(),
+    },
+    $transaction: vi.fn((callback) => callback(mockPrisma)),
+  };
+  return { prisma: mockPrisma };
+});
 
 vi.mock('next/cache', () => ({
   revalidatePath: vi.fn(),
