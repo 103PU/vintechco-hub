@@ -15,7 +15,7 @@ import { InteractiveChecklist } from "./InteractiveChecklist";
 // Minimal FileText icon since it's not imported correctly from lucide-react in current scope
 // We alias the import to avoid conflict
 import { FileText as FileTextOriginal } from "lucide-react";
-function FileText({ size, className }: { size: number, className: string }) {
+function FileText({ size, className }: { size: number, className?: string }) {
     return <FileTextOriginal size={size} className={className} />
 }
 
