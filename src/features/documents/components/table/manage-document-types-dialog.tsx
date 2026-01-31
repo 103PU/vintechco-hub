@@ -16,7 +16,6 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { getAllDocumentTypes, createDocumentType, updateDocumentType, deleteDocumentType } from "../../actions"
 import { toast } from "sonner"
-import { getTagColors } from "@/lib/utils"
 import { getDocumentTypeIcon } from "../../utils/ui-helpers"
 
 type TypeData = { id: string, name: string };

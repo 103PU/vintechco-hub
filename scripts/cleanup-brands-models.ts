@@ -1,5 +1,5 @@
-// @ts-nocheck
-// Legacy script - excluded from strict type checking to prevent build failures during migration.
+// Cleanup script for Brands and Models
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 

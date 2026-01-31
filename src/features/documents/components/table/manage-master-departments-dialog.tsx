@@ -1,16 +1,16 @@
 "use client"
 
 import * as React from "react"
-import { PlusCircle, Edit2, Save, X, Trash2, Building } from "lucide-react"
+import { PlusCircle, Edit2, Save, X, Trash2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -97,10 +97,10 @@ export function ManageMasterDepartmentsDialog({ children }: { children: React.Re
                         Danh sách các phòng ban/bộ phận trong công ty.
                     </DialogDescription>
                 </DialogHeader>
-                
+
                 <div className="flex gap-2 my-4">
-                    <Input 
-                        placeholder="Tên bộ phận mới..." 
+                    <Input
+                        placeholder="Tên bộ phận mới..."
                         value={newName}
                         onChange={(e) => setNewName(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && handleCreate()}
@@ -115,8 +115,8 @@ export function ManageMasterDepartmentsDialog({ children }: { children: React.Re
                         <div key={dept.id} className="flex items-center justify-between p-2 border rounded-md bg-gray-50">
                             {editingId === dept.id ? (
                                 <div className="flex flex-1 items-center gap-2">
-                                    <Input 
-                                        value={editValue} 
+                                    <Input
+                                        value={editValue}
                                         onChange={(e) => setEditValue(e.target.value)}
                                         className="h-8"
                                     />
@@ -129,8 +129,8 @@ export function ManageMasterDepartmentsDialog({ children }: { children: React.Re
                                 </div>
                             ) : (
                                 <>
-                                    <Badge 
-                                        variant="secondary" 
+                                    <Badge
+                                        variant="secondary"
                                         className="bg-indigo-50 text-indigo-700 hover:bg-indigo-100"
                                     >
                                         {dept.name}

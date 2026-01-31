@@ -2,7 +2,6 @@
 const lighthouse = require('lighthouse');
 const chromeLauncher = require('chrome-launcher');
 const fs = require('fs');
-const { groupBy } = require('lodash');
 const path = require('path');
 
 /**

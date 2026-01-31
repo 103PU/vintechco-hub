@@ -67,14 +67,14 @@ async function getStats(): Promise<Stats> {
         docCount,
         userCount,
         tagCount,
-        latestDocs: latestDocs.map((d: any) => ({
+        latestDocs: latestDocs.map((d) => ({
             id: d.id,
             title: d.title,
             updatedAt: d.updatedAt,
             documentType: d.technicalMetadata?.documentType ? { name: d.technicalMetadata.documentType.name } : null
         })),
         completionRate,
-        chartData: typesBreakdown.map((t: any) => ({ name: t.name, value: t._count.technicalMetadataList }))
+        chartData: typesBreakdown.map((t) => ({ name: t.name, value: t._count.technicalMetadataList }))
     };
 }
 

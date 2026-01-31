@@ -57,7 +57,7 @@ export const deleteDepartment = withRole([Role.ADMIN], async (id: string) => {
         await prisma.department.delete({ where: { id } });
         revalidatePath('/admin/departments');
         return { success: true };
-    } catch (e) {
+    } catch {
         return { success: false, error: 'Không thể xóa phòng ban đang có tài liệu.' };
     }
 });

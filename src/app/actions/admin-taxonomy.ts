@@ -44,7 +44,7 @@ export const deleteBrand = withRole([Role.ADMIN], async (id: string) => {
         await prisma.brand.delete({ where: { id } });
         revalidatePath('/admin/brands');
         return { success: true };
-    } catch (e) {
+    } catch {
         return { success: false, error: 'Không thể xóa thương hiệu đang có dòng máy liên kết.' };
     }
 });
@@ -90,7 +90,7 @@ export const deleteTag = withRole([Role.ADMIN], async (id: string) => {
         await prisma.tag.delete({ where: { id } });
         revalidatePath('/admin/tags');
         return { success: true };
-    } catch (e) {
+    } catch {
         return { success: false, error: 'Không thể xóa thẻ đang được sử dụng.' };
     }
 });

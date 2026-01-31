@@ -27,6 +27,7 @@ const documentSchema = z.object({
     title: z.string().min(3, { message: 'Tiêu đề phải có ít nhất 3 ký tự.' }),
     content: z.string().min(10, { message: 'Nội dung không được để trống.' }),
     documentTypeId: z.string().min(1, { message: 'Vui lòng chọn loại quy trình.' }),
+    topicId: z.string().optional(),
     tagIds: z.array(z.string()).optional(),
     departmentIds: z.array(z.string()).optional(),
     machineModelIds: z.array(z.string()).optional(),
@@ -37,11 +38,13 @@ interface DocumentFormProps {
     allTags: SimpleTag[];
     allDepartments: SimpleDepartment[];
     allMachineModels: SimpleMachineModel[];
+    allTopics: { id: string; name: string; categoryId: string }[];
     initialData?: {
         id: string;
         title: string;
         content: string;
         documentTypeId: string | null;
+        topicId?: string | null;
         tags?: { tagId: string }[];
         departments?: { departmentId: string }[];
         machineModels?: { machineModelId: string }[];
@@ -67,16 +70,18 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
     )
 }
 
-export function DocumentForm({ documentTypes, allTags, allDepartments, allMachineModels, initialData }: DocumentFormProps) {
+export function DocumentForm({ documentTypes, allTags, allDepartments, allMachineModels, initialData, allTopics }: DocumentFormProps) {
     const router = useRouter();
     const isEditMode = !!initialData;
 
     const { register, handleSubmit, control, formState: { errors, isSubmitting }, setValue, getValues } = useForm<z.infer<typeof documentSchema>>({
         resolver: zodResolver(documentSchema),
+        mode: 'onBlur',
         defaultValues: {
             title: initialData?.title || '',
             content: initialData?.content || '',
             documentTypeId: initialData?.documentTypeId || undefined,
+            topicId: initialData?.topicId || undefined,
             tagIds: initialData?.tags?.map(t => t.tagId) || [],
             departmentIds: initialData?.departments?.map(d => d.departmentId) || [],
             machineModelIds: initialData?.machineModels?.map(m => m.machineModelId) || [],
@@ -162,7 +167,7 @@ export function DocumentForm({ documentTypes, allTags, allDepartments, allMachin
         } finally {
             setIsImporting(false);
         }
-    }, [editor, setValue]); // Fixed: Added dependencies
+    }, [editor, setValue, getValues]);
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
@@ -256,6 +261,37 @@ export function DocumentForm({ documentTypes, allTags, allDepartments, allMachin
                             )}
                         />
                         {errors.documentTypeId && <p className="text-sm text-red-600 mt-1">{errors.documentTypeId.message}</p>}
+                    </div>
+
+                    {/* Topic Selection */}
+                    <div className="pt-2">
+                        <Label htmlFor="topicId">Chủ đề (Topic)</Label>
+                        <Controller
+                            control={control}
+                            name="topicId"
+                            render={({ field }) => {
+                                // Filter topics by selected Document Type
+                                const selectedType = getValues('documentTypeId');
+                                const filteredTopics = allTopics?.filter(t => t.categoryId === selectedType) || [];
+
+                                return (
+                                    <Select
+                                        onValueChange={field.onChange}
+                                        value={field.value}
+                                        disabled={!selectedType || filteredTopics.length === 0}
+                                    >
+                                        <SelectTrigger className="mt-1">
+                                            <SelectValue placeholder={!selectedType ? "Chọn loại văn bản trước" : (filteredTopics.length === 0 ? "Không có topic nào" : "Chọn chủ đề...")} />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {filteredTopics.map(topic => (
+                                                <SelectItem key={topic.id} value={topic.id}>{topic.name}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                )
+                            }}
+                        />
                     </div>
 
                     <div className="pt-2">

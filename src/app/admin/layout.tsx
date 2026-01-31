@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Home, FileText, Users, LogOut, ArrowLeft, LayoutDashboard } from 'lucide-react';
+import { FileText, Users, ArrowLeft, LayoutDashboard } from 'lucide-react';
 import AuthButton from '@/components/AuthButton';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/features/auth/config/authOptions';

@@ -6,11 +6,12 @@ async function getFormData() {
     const tags = await prisma.tag.findMany();
     const departments = await prisma.department.findMany();
     const machineModels = await prisma.machineModel.findMany();
-    return { documentTypes, tags, departments, machineModels };
+    const topics = await prisma.documentTopic.findMany();
+    return { documentTypes, tags, departments, machineModels, topics };
 }
 
 export default async function NewDocumentPage() {
-    const { documentTypes, tags, departments, machineModels } = await getFormData();
+    const { documentTypes, tags, departments, machineModels, topics } = await getFormData();
 
     return (
         <div>
@@ -20,11 +21,12 @@ export default async function NewDocumentPage() {
                     Điền các thông tin dưới đây để thêm một quy trình mới vào hệ thống.
                 </p>
             </div>
-            <DocumentFormLoader 
+            <DocumentFormLoader
                 documentTypes={documentTypes}
                 allTags={tags}
                 allDepartments={departments}
                 allMachineModels={machineModels}
+                allTopics={topics}
             />
         </div>
     )

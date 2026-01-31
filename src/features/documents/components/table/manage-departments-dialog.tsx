@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Check, PlusCircle, Building } from "lucide-react"
+import { Check, PlusCircle } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -22,7 +22,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
-import { getAllDepartments, updateDocumentDepartments, createDepartment } from "../../actions"
+import { getAllDepartments, updateDocumentDepartments } from "../../actions"
 import { toast } from "sonner"
 
 type Dept = { id: string, name: string };

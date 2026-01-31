@@ -1,24 +1,23 @@
 "use client"
 
 import * as React from "react"
-import { FileText } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
 } from "@/components/ui/dialog"
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
 } from "@/components/ui/select"
 import { getAllDocumentTypes } from "../../actions" // reusing existing action
 import { updateDocumentTypeRelation } from "../../actions" // Need to create this
@@ -44,16 +43,16 @@ export function AssignTypeDialog({ documentIds, children }: AssignTypeDialogProp
                     setTypes(result.types);
                 }
             })
-            setSelectedTypeId(""); 
+            setSelectedTypeId("");
         }
     }, [open])
 
     const handleSave = async () => {
         if (!selectedTypeId) return;
-        
+
         setIsLoading(true);
         const result = await updateDocumentTypeRelation(documentIds, selectedTypeId);
-        if(result.success) {
+        if (result.success) {
             toast.success("Cập nhật loại tài liệu thành công!");
             setOpen(false);
         } else {

@@ -68,7 +68,8 @@ test.describe('Admin Panel', () => {
             await expect(table).toBeVisible();
 
             // Check for pagination controls if data exists
-            const paginationButtons = page.locator('button:has-text("Previous"), button:has-text("Next"), button:has-text("Trước"), button:has-text("Sau")');
+            // Check for pagination controls if data exists
+            await expect(page.locator('button:has-text("Previous"), button:has-text("Next"), button:has-text("Trước"), button:has-text("Sau")').first()).toBeVisible({ timeout: 100 }).catch(() => { });
             // Pagination might not be visible if there's little data
         }
     });

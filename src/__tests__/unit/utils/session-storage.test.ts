@@ -3,7 +3,6 @@ import { SessionStateManager } from '@/lib/utils/session-storage';
 
 describe('SessionStateManager', () => {
     let manager: SessionStateManager;
-    const storageKey = 'test-session';
 
     beforeEach(() => {
         // Clear sessionStorage before each test

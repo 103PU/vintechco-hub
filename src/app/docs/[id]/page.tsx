@@ -2,17 +2,14 @@ import { prisma } from "@/lib/prisma/client";
 import { notFound } from "next/navigation";
 import {
     ChevronLeft,
-    Calendar,
     Tag as TagIcon,
     Building,
     Cpu,
-    CheckCircle2,
     Clock
 } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { getTagColors } from "@/lib/utils";
-import { Separator } from "@/components/ui/separator";
 import { InteractiveChecklist } from "./InteractiveChecklist";
 
 // Minimal FileText icon since it's not imported correctly from lucide-react in current scope

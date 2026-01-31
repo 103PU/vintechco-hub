@@ -15,7 +15,7 @@ describe('OfflineBanner Component', () => {
     const { container } = render(
       <OfflineBanner isOnline={true} pendingSyncCount={0} />
     );
-    
+
     expect(container).toBeEmptyDOMElement();
   });
 
@@ -23,7 +23,7 @@ describe('OfflineBanner Component', () => {
     render(
       <OfflineBanner isOnline={false} pendingSyncCount={0} />
     );
-    
+
     expect(screen.getByRole('alert')).toBeInTheDocument();
     expect(screen.getByText('Không có kết nối mạng')).toBeInTheDocument();
   });
@@ -32,7 +32,7 @@ describe('OfflineBanner Component', () => {
     render(
       <OfflineBanner isOnline={false} pendingSyncCount={5} />
     );
-    
+
     expect(screen.getByText(/5 thay đổi sẽ được đồng bộ/)).toBeInTheDocument();
   });
 
@@ -40,7 +40,7 @@ describe('OfflineBanner Component', () => {
     render(
       <OfflineBanner isOnline={false} pendingSyncCount={0} />
     );
-    
+
     expect(screen.queryByText(/thay đổi sẽ được đồng bộ/)).not.toBeInTheDocument();
   });
 
@@ -48,13 +48,13 @@ describe('OfflineBanner Component', () => {
     const { container } = render(
       <OfflineBanner isOnline={false} pendingSyncCount={3} />
     );
-    
+
     const closeButton = screen.getByRole('button', { name: 'Đóng thông báo' });
     fireEvent.click(closeButton);
-    
+
     // Banner should be gone
     expect(container).toBeEmptyDOMElement();
-    
+
     // Dismissal should be stored
     expect(localStorage.getItem('offline-banner-dismissed')).toBe('true');
   });
@@ -62,25 +62,25 @@ describe('OfflineBanner Component', () => {
   it('should persist dismissal state', () => {
     // Set dismissal in localStorage
     localStorage.setItem('offline-banner-dismissed', 'true');
-    
+
     const { container } = render(
       <OfflineBanner isOnline={false} pendingSyncCount={2} />
     );
-    
+
     // Should not render
     expect(container).toBeEmptyDOMElement();
   });
 
   it('should clear dismissal when coming back online', () => {
     localStorage.setItem('offline-banner-dismissed', 'true');
-    
+
     const { rerender } = render(
       <OfflineBanner isOnline={false} pendingSyncCount={0} />
     );
-    
+
     // Go online
     rerender(<OfflineBanner isOnline={true} pendingSyncCount={0} />);
-    
+
     // Dismissal should be cleared
     expect(localStorage.getItem('offline-banner-dismissed')).toBeNull();
   });
@@ -89,10 +89,10 @@ describe('OfflineBanner Component', () => {
     render(
       <OfflineBanner isOnline={false} pendingSyncCount={3} />
     );
-    
+
     const alert = screen.getByRole('alert');
     expect(alert).toHaveAttribute('aria-live', 'assertive');
-    
+
     const closeButton = screen.getByRole('button', { name: 'Đóng thông báo' });
     expect(closeButton).toBeInTheDocument();
   });
@@ -101,7 +101,7 @@ describe('OfflineBanner Component', () => {
     const { container } = render(
       <OfflineBanner isOnline={false} pendingSyncCount={0} />
     );
-    
+
     // Icon should be present (as SVG)
     const icon = container.querySelector('svg');
     expect(icon).toBeInTheDocument();
@@ -114,12 +114,12 @@ describe('OfflineBanner Component', () => {
         throw new Error('localStorage not available');
       });
 
-      const { container } = render(
+      render(
         <OfflineBanner isOnline={false} pendingSyncCount={1} />
       );
-      
+
       const closeButton = screen.getByRole('button', { name: 'Đóng thông báo' });
-      
+
       // Should not throw
       expect(() => fireEvent.click(closeButton)).not.toThrow();
 

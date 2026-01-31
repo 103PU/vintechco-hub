@@ -17,18 +17,20 @@ interface DocumentFormLoaderProps {
     allTags: SimpleTag[];
     allDepartments: SimpleDepartment[];
     allMachineModels: SimpleMachineModel[];
+    allTopics: { id: string; name: string; categoryId: string }[];
     initialData?: {
         id: string;
         title: string;
         content: string;
         documentTypeId: string | null;
+        topicId?: string | null;
         tags?: { tagId: string }[];
         departments?: { departmentId: string }[];
         machineModels?: { machineModelId: string }[];
     };
 }
 
-export function DocumentFormLoader({ documentTypes, allTags, allDepartments, allMachineModels, initialData }: DocumentFormLoaderProps) {
+export function DocumentFormLoader({ documentTypes, allTags, allDepartments, allMachineModels, initialData, allTopics }: DocumentFormLoaderProps) {
     return (
         <DocumentForm
             documentTypes={documentTypes}
@@ -36,6 +38,7 @@ export function DocumentFormLoader({ documentTypes, allTags, allDepartments, all
             allDepartments={allDepartments}
             allMachineModels={allMachineModels}
             initialData={initialData}
+            allTopics={allTopics}
         />
     );
 }

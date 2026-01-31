@@ -144,7 +144,7 @@ export function StepManager({ documentId, initialSteps }: StepManagerProps) {
             } else {
                 toast.error(res.error || 'Không thể lưu các bước.');
             }
-        } catch (_e) {
+        } catch {
             toast.error('Đã có lỗi khi lưu.');
         } finally {
             setIsSaving(false);

@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { X, Command } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Command } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -22,7 +21,7 @@ const shortcuts: Shortcut[] = [
   { keys: ['/'], description: 'Focus search (alternative)', category: 'Navigation' },
   { keys: ['Esc'], description: 'Close modals / Clear focus', category: 'Navigation' },
   { keys: ['?'], description: 'Show this help', category: 'Navigation' },
-  
+
   // Document Editing
   { keys: ['Ctrl', 'S'], description: 'Save document', category: 'Editing' },
   { keys: ['Ctrl', 'Shift', 'P'], description: 'Preview document', category: 'Editing' },

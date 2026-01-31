@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createDocument, updateDocument, updateDocumentTags } from './actions';
+import { createDocument, updateDocumentTags } from './actions';
 import { prisma } from '@/lib/prisma/client';
 import { getServerSession } from 'next-auth';
 import { vi, describe, beforeEach, it, expect } from 'vitest';

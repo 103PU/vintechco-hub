@@ -22,6 +22,7 @@ export default async function EditDocumentPage({ params }: EditDocumentPageProps
     const allTags = await prisma.tag.findMany();
     const allDepartments = await prisma.department.findMany();
     const allMachineModels = await prisma.machineModel.findMany();
+    const allTopics = await prisma.documentTopic.findMany();
 
     return (
         <div>
@@ -36,6 +37,7 @@ export default async function EditDocumentPage({ params }: EditDocumentPageProps
                 allTags={allTags}
                 allDepartments={allDepartments}
                 allMachineModels={allMachineModels}
+                allTopics={allTopics}
                 initialData={document}
             />
             <StepManagerLoader documentId={document.id} initialSteps={document.steps} />

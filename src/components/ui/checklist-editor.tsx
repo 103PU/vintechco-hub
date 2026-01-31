@@ -19,7 +19,6 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Textarea } from './textarea';
 import { GripVertical, Trash2, Plus } from 'lucide-react';
 

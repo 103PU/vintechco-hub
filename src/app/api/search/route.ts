@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma/client';
-import { Prisma } from '@prisma/client';
 import { normalizeVietnamese } from '@/lib/utils/vietnamese-text';
 
 export async function GET(request: Request) {
@@ -62,7 +61,6 @@ export async function GET(request: Request) {
 
         // Filter by multiple tags (new feature)
         if (tags && tags.length > 0) {
-            const existingMeta = where.technicalMetadata || {};
             // Merge conditions if needed, but for now simple assignment or merge
             // If we have multiple technicalMetadata filters, we need to be careful.
             // Prisma AND:

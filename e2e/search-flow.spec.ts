@@ -81,7 +81,7 @@ test.describe('Search Flow', () => {
 
         // Should not immediately search
         const loadingIndicator = page.locator('[aria-busy="true"], .loading, .spinner');
-        const isLoading = await loadingIndicator.isVisible().catch(() => false);
+        await loadingIndicator.isVisible().catch(() => false);
 
         // Results should update after debounce
         await page.waitForTimeout(500);

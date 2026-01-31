@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { EmptyState } from '@/components/ui/empty-state';
-import { FileQuestion, Search, FolderOpen } from 'lucide-react';
+import { Search, FolderOpen } from 'lucide-react';
 
 describe('EmptyState Component', () => {
   it('should render with title and description', () => {
@@ -39,7 +39,7 @@ describe('EmptyState Component', () => {
 
   it('should render with action button', () => {
     const handleAction = vi.fn();
-    
+
     render(
       <EmptyState
         title="No documents"
@@ -51,7 +51,7 @@ describe('EmptyState Component', () => {
 
     const button = screen.getByRole('button', { name: 'Create Document' });
     expect(button).toBeInTheDocument();
-    
+
     button.click();
     expect(handleAction).toHaveBeenCalledOnce();
   });

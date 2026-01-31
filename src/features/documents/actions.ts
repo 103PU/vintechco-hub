@@ -14,6 +14,7 @@ const documentSchema = z.object({
     title: z.string().min(3),
     content: z.string().min(10),
     documentTypeId: z.string(),
+    topicId: z.string().optional(),
     tagIds: z.array(z.string()).optional(),
     departmentIds: z.array(z.string()).optional(),
     machineModelIds: z.array(z.string()).optional(),
@@ -87,10 +88,11 @@ export async function createDocument(data: unknown) {
     const parsed = documentSchema.safeParse(data);
 
     if (!parsed.success) {
-        return { success: false, error: "Dữ liệu không hợp lệ." };
+        const errorMessage = parsed.error.issues.map(err => err.message).join(", ");
+        return { success: false, error: errorMessage || "Dữ liệu không hợp lệ." };
     }
 
-    const { title, content, documentTypeId, tagIds, departmentIds, machineModelIds } = parsed.data;
+    const { title, content, documentTypeId, topicId, tagIds, departmentIds, machineModelIds } = parsed.data;
 
     try {
         // Transaction to ensure atomicity
@@ -112,6 +114,7 @@ export async function createDocument(data: unknown) {
                 data: {
                     documentId: doc.id,
                     documentTypeId, // Nullable in schema? Schema says String? so ok.
+                    topicId, // Enforcing hierarchy
                     tags: tagIds?.length ? {
                         create: tagIds.map(id => ({ tag: { connect: { id } } }))
                     } : undefined,
@@ -140,10 +143,11 @@ export async function updateDocument(id: string, data: unknown) {
     const parsed = documentSchema.safeParse(data);
 
     if (!parsed.success) {
-        return { success: false, error: "Dữ liệu không hợp lệ." };
+        const errorMessage = parsed.error.issues.map(err => err.message).join(", ");
+        return { success: false, error: errorMessage || "Dữ liệu không hợp lệ." };
     }
 
-    const { title, content, documentTypeId, tagIds, departmentIds, machineModelIds } = parsed.data;
+    const { title, content, documentTypeId, topicId, tagIds, departmentIds, machineModelIds } = parsed.data;
 
     try {
         await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
@@ -164,11 +168,13 @@ export async function updateDocument(id: string, data: unknown) {
                 create: {
                     documentId: id,
                     documentTypeId,
+                    topicId,
                     // For new creation via update -> we might miss relations if we don't connect them here
                     // But typically update handles them below.
                 },
                 update: {
-                    documentTypeId
+                    documentTypeId,
+                    topicId
                 }
             });
 
@@ -275,7 +281,7 @@ export async function createTag(name: string) {
     try {
         await prisma.tag.create({ data: { name } });
         return { success: true };
-    } catch (_error) {
+    } catch {
         return { success: false, error: 'Failed to create tag' };
     }
 }
@@ -284,7 +290,7 @@ export async function updateTag(id: string, name: string) {
     try {
         await prisma.tag.update({ where: { id }, data: { name } });
         return { success: true };
-    } catch (_error) {
+    } catch {
         return { success: false, error: 'Failed to update tag' };
     }
 }
@@ -293,7 +299,7 @@ export async function deleteTag(id: string) {
     try {
         await prisma.tag.delete({ where: { id } });
         return { success: true };
-    } catch (_error) {
+    } catch {
         return { success: false, error: 'Failed to delete tag' };
     }
 }
@@ -372,7 +378,7 @@ export async function createDepartment(name: string) {
     try {
         await prisma.department.create({ data: { name } });
         return { success: true };
-    } catch (_error) {
+    } catch {
         return { success: false, error: 'Failed to create department' };
     }
 }
@@ -381,7 +387,7 @@ export async function updateDepartment(id: string, name: string) {
     try {
         await prisma.department.update({ where: { id }, data: { name } });
         return { success: true };
-    } catch (_error) {
+    } catch {
         return { success: false, error: 'Failed to update department' };
     }
 }
@@ -390,7 +396,7 @@ export async function deleteDepartment(id: string) {
     try {
         await prisma.department.delete({ where: { id } });
         return { success: true };
-    } catch (_error) {
+    } catch {
         return { success: false, error: 'Failed to delete department' };
     }
 }
@@ -612,7 +618,7 @@ export async function deleteDocumentType(id: string) {
     try {
         await prisma.documentType.delete({ where: { id } });
         return { success: true };
-    } catch (_error) {
+    } catch {
         return { success: false, error: 'Failed to delete document type' };
     }
 }

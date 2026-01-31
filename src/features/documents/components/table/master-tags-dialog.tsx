@@ -1,16 +1,16 @@
 "use client"
 
 import * as React from "react"
-import { PlusCircle, Tag, Trash2, Edit2, Save, X } from "lucide-react"
+import { PlusCircle, Trash2, Edit2, Save, X } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -98,10 +98,10 @@ export function MasterTagsDialog({ children }: { children: React.ReactNode }) {
                         Thêm, sửa, xóa các tags dùng chung cho toàn bộ hệ thống.
                     </DialogDescription>
                 </DialogHeader>
-                
+
                 <div className="flex gap-2 my-4">
-                    <Input 
-                        placeholder="Tên tag mới..." 
+                    <Input
+                        placeholder="Tên tag mới..."
                         value={newTagName}
                         onChange={(e) => setNewTagName(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && handleCreate()}
@@ -116,8 +116,8 @@ export function MasterTagsDialog({ children }: { children: React.ReactNode }) {
                         <div key={tag.id} className="flex items-center justify-between p-2 border rounded-md bg-gray-50">
                             {editingTagId === tag.id ? (
                                 <div className="flex flex-1 items-center gap-2">
-                                    <Input 
-                                        value={editValue} 
+                                    <Input
+                                        value={editValue}
                                         onChange={(e) => setEditValue(e.target.value)}
                                         className="h-8"
                                     />
@@ -130,10 +130,10 @@ export function MasterTagsDialog({ children }: { children: React.ReactNode }) {
                                 </div>
                             ) : (
                                 <>
-                                    <Badge 
-                                        variant="outline" 
-                                        style={{ 
-                                            backgroundColor: getBgColorForString(tag.name), 
+                                    <Badge
+                                        variant="outline"
+                                        style={{
+                                            backgroundColor: getBgColorForString(tag.name),
                                             color: getTextColorForString(tag.name),
                                             borderColor: getTextColorForString(tag.name)
                                         }}
