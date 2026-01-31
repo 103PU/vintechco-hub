@@ -8,6 +8,7 @@ interface MainLayoutProps {
     children: React.ReactNode;
     sidebar?: React.ReactNode;
     outline?: React.ReactNode;
+    fullWidth?: boolean;
     className?: string;
 }
 
@@ -15,6 +16,7 @@ export function MainLayout({
     children,
     sidebar,
     outline,
+    fullWidth = false,
     className
 }: MainLayoutProps) {
     return (
@@ -33,7 +35,7 @@ export function MainLayout({
             {/* Main Content */}
             <main className="flex-1 flex flex-col min-h-0 overflow-hidden">
                 <ScrollArea className="flex-1">
-                    <div className="container max-w-5xl mx-auto p-4 md:p-8">
+                    <div className={cn("container mx-auto p-4 md:p-8 transition-all duration-300", fullWidth ? "max-w-full px-6" : "max-w-5xl")}>
                         {children}
                     </div>
                 </ScrollArea>

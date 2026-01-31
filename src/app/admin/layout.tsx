@@ -58,7 +58,7 @@ export default async function AdminLayout({
   );
 
   return (
-    <MainLayout sidebar={Sidebar}>
+    <MainLayout sidebar={Sidebar} fullWidth>
       <header className="bg-card shadow-sm p-4 flex justify-end items-center mb-6 rounded-md border border-border">
         <AuthButton />
       </header>

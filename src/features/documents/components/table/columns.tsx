@@ -85,10 +85,17 @@ export const columns: ColumnDef<DocumentData>[] = [
         },
         cell: ({ row }) => {
             return (
-                <div className="flex space-x-2">
-                    <span className="max-w-[300px] lg:max-w-[500px] truncate font-medium block" title={row.getValue("title")}>
+                <div className="flex items-center gap-3 py-2">
+                    <div className="p-2 bg-blue-50 text-blue-600 rounded-lg shrink-0">
+                        <FileText size={20} />
+                    </div>
+                    <Link
+                        href={`/docs/${row.original.id}`}
+                        className="font-bold text-gray-900 text-base hover:text-blue-600 hover:underline transition-colors block truncate max-w-[250px] sm:max-w-[400px] lg:max-w-[600px]"
+                        title={row.getValue("title")}
+                    >
                         {row.getValue("title")}
-                    </span>
+                    </Link>
                 </div>
             )
         },
