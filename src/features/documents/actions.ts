@@ -20,7 +20,60 @@ const documentSchema = z.object({
     machineModelIds: z.array(z.string()).optional(),
 })
 
-// ... (getDocumentsForHome remains unchanged)
+/**
+ * Fetch all documents for the homepage (Server-Side Prefetching)
+ * Optimized for LCP by running on the server.
+ */
+export async function getDocumentsForHome(): Promise<FullDocument[]> {
+    try {
+        const docs = await prisma.document.findMany({
+            include: {
+                departments: {
+                    include: {
+                        department: true
+                    }
+                },
+                // Modular Architecture: Fetch Extension Data
+                technicalMetadata: {
+                    include: {
+                        documentType: true,
+                        topic: true,
+                        tags: {
+                            include: {
+                                tag: true
+                            }
+                        },
+                        machineModels: {
+                            include: {
+                                machineModel: true
+                            }
+                        }
+                    }
+                },
+                fileAssets: true,
+            },
+            orderBy: {
+                createdAt: 'desc'
+            }
+        });
+
+        // Map Modular Data back to Flat Structure for UI Compatibility (Facade Pattern)
+        return docs.map(doc => ({
+            ...doc,
+            // Map Technical Metadata to top-level if it exists
+            documentType: doc.technicalMetadata?.documentType ?? null,
+            topic: doc.technicalMetadata?.topic ?? null,
+            tags: doc.technicalMetadata?.tags ?? [],
+            machineModels: doc.technicalMetadata?.machineModels ?? [],
+
+            // Clean up internal metadata object from result to match type EXACTLY
+            technicalMetadata: undefined
+        })) as unknown as FullDocument[];
+    } catch (error) {
+        console.error('Failed to prefetch home documents:', error);
+        return [];
+    }
+}
 
 export async function createDocument(data: unknown) {
     const session = await getServerSession(authOptions);
