@@ -69,7 +69,7 @@ function TopicRow({ topicGroup }: { topicGroup: { topic: { id: string, name: str
 function DocumentCard({ doc }: { doc: FullDocument }) {
     return (
         <a
-            href={`/documents/${doc.id}`}
+            href={`/docs/${doc.id}`}
             className="group flex flex-col h-full bg-white rounded-2xl border border-gray-200 p-4 hover:border-indigo-300 hover:shadow-xl hover:shadow-indigo-50/50 transition-all duration-300 relative overflow-hidden"
         >
             <div className="flex items-start justify-between mb-3">

@@ -1,9 +1,8 @@
 import { Suspense } from 'react';
-import { SearchForm } from '@/components/SearchForm';
+// SearchForm and AuthButton are now inside Header
 import DocumentFlow from '@/components/DocumentFlow'; // The new client component
-import AuthButton from '@/components/AuthButton'; // Import the AuthButton
-import { Cpu } from 'lucide-react';
 import { getDocumentsForHome } from '@/features/documents/actions'; // Import server action
+import { Header } from '@/components/layout/Header';
 
 // A simple loading skeleton for the main content
 function MainContentSkeleton() {
@@ -33,19 +32,7 @@ export default async function HomePage() {
 
   return (
     <div className="bg-gray-100 min-h-screen">
-      <header className="bg-white shadow-sm sticky top-0 z-10">
-        <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <div className='flex items-center gap-2'>
-            <Cpu size={32} className="text-blue-600" />
-            <h1 className="text-2xl font-bold text-gray-900">VINTECHCO Hub</h1>
-          </div>
-          {/* SearchForm is a client component, needs Suspense */}
-          <Suspense>
-            <SearchForm />
-          </Suspense>
-          <AuthButton />
-        </div>
-      </header>
+      <Header />
 
       <main className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* DocumentFlow handles its own data fetching and loading states */}

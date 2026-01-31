@@ -83,6 +83,15 @@ export const columns: ColumnDef<DocumentData>[] = [
                 </Button>
             )
         },
+        cell: ({ row }) => {
+            return (
+                <div className="flex space-x-2">
+                    <span className="max-w-[300px] lg:max-w-[500px] truncate font-medium block" title={row.getValue("title")}>
+                        {row.getValue("title")}
+                    </span>
+                </div>
+            )
+        },
     },
     {
         accessorKey: "documentType",

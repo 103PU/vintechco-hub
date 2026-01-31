@@ -17,6 +17,14 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { ManageDepartmentsDialog } from "./manage-departments-dialog"
 import { ManageDocumentTypesDialog } from "./manage-document-types-dialog"
 import { ManageMasterDepartmentsDialog } from "./manage-master-departments-dialog"
@@ -85,7 +93,7 @@ export function DataTableToolbar<TData>({
 
                     <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0">
 
-                        {/* 1. DEPARTMENT FILTER */}
+                        {/* 1. DEPARTMENT FILTER (MAIN) */}
                         {table.getColumn("departments") && (
                             <DataTableFacetedFilter
                                 column={table.getColumn("departments")}
@@ -94,7 +102,7 @@ export function DataTableToolbar<TData>({
                             />
                         )}
 
-                        {/* 2. CATEGORY FILTER (Phân Mục) */}
+                        {/* 2. CATEGORY FILTER (MAIN) */}
                         {table.getColumn("documentType") && (
                             <DataTableFacetedFilter
                                 column={table.getColumn("documentType")}
@@ -103,39 +111,35 @@ export function DataTableToolbar<TData>({
                             />
                         )}
 
-                        {/* 3. TOPIC FILTER */}
+                        {/* SECONDARY FILTERS - COMPACT or GROUPED */}
+                        {/* We could use a Sheet or Popover here. For now, let's just make them visible but maybe visually distinct, 
+                            or if we strictly follow "Dropdown Menu", we need a custom component. 
+                            Given the constraints, keeping them inline but possibly ensuring they don't wrap ugly is key.
+                            However, the user showed "Rừng Nút". 
+                            Let's implement a "More Filters" button that is a Popover containing the other filters? 
+                            No, FacetedFilter is Popover. 
+                            Let's just keep Topic as Main? No, Topic is Level 3.
+                            Brand/Model/Tag are Level 4.
+                        */}
+
+                        <div className="h-4 w-px bg-gray-300 mx-2 hidden lg:block" />
+
                         {table.getColumn("topic") && (
                             <DataTableFacetedFilter
                                 column={table.getColumn("topic")}
-                                title="Loại (Topic)"
+                                title="Topic"
                                 options={topicOptions}
                             />
                         )}
-
-                        {/* 4. BRAND FILTER */}
+                        {/* Brand/Model/Tags - Only show if space permits or put in a 'Advanced' toggle? 
+                             Let's keep them for now but maybe make the list scrollable horizontal if too many. 
+                             The current `overflow-x-auto` handles it. 
+                         */}
                         {table.getColumn("brand") && (
                             <DataTableFacetedFilter
                                 column={table.getColumn("brand")}
                                 title="Hãng"
                                 options={brandOptions}
-                            />
-                        )}
-
-                        {/* 5. MODEL FILTER */}
-                        {table.getColumn("model") && (
-                            <DataTableFacetedFilter
-                                column={table.getColumn("model")}
-                                title="Model"
-                                options={modelOptions}
-                            />
-                        )}
-
-                        {/* 6. TAGS FILTER */}
-                        {table.getColumn("tags") && (
-                            <DataTableFacetedFilter
-                                column={table.getColumn("tags")}
-                                title="Tags"
-                                options={tagOptions}
                             />
                         )}
 
@@ -152,56 +156,75 @@ export function DataTableToolbar<TData>({
                     </div>
                 </div>
 
-                {/* MANAGEMENT GROUP */}
-                <div className="flex items-center gap-3 w-full lg:w-auto justify-between lg:justify-end border-t lg:border-t-0 pt-4 lg:pt-0">
-                    <span className="text-sm font-semibold text-gray-600 shrink-0">Quản lý:</span>
-                    <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-lg border border-gray-200 shadow-sm">
+                {/* MANAGEMENT GROUP - CLEANED UP */}
+                <div className="flex items-center gap-2 w-full lg:w-auto justify-between lg:justify-end border-t lg:border-t-0 pt-4 lg:pt-0">
 
-                        {/* 1. Manage Departments */}
-                        <ManageMasterDepartmentsDialog>
-                            <Button variant="ghost" size="sm" className="h-8 px-2 text-gray-600 hover:bg-white hover:text-blue-600 hover:shadow-sm">
-                                <Building className="mr-2 h-3.5 w-3.5" />
-                                Bộ phận
+                    {/* MORE FILTERS (Model, Tags) - Restored but cleaner */}
+                    {table.getColumn("model") && (
+                        <div className="hidden xl:block">
+                            <DataTableFacetedFilter
+                                column={table.getColumn("model")}
+                                title="Model"
+                                options={modelOptions}
+                            />
+                        </div>
+                    )}
+                    {table.getColumn("tags") && (
+                        <div className="hidden xl:block">
+                            <DataTableFacetedFilter
+                                column={table.getColumn("tags")}
+                                title="Tags"
+                                options={tagOptions}
+                            />
+                        </div>
+                    )}
+
+                    <div className="h-6 w-px bg-gray-300 mx-2 hidden lg:block" />
+
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline" size="sm" className="h-9 gap-2">
+                                <Box className="h-4 w-4" />
+                                <span className="hidden sm:inline">Quản lý Hệ thống</span>
                             </Button>
-                        </ManageMasterDepartmentsDialog>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Danh mục dữ liệu</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
 
-                        <div className="w-px h-4 bg-gray-300"></div>
+                            <ManageMasterDepartmentsDialog>
+                                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                                    <Building className="mr-2 h-4 w-4 text-indigo-600" />
+                                    <span>Bộ phận</span>
+                                </DropdownMenuItem>
+                            </ManageMasterDepartmentsDialog>
 
+                            <ManageDocumentTypesDialog>
+                                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                                    <FileText className="mr-2 h-4 w-4 text-blue-600" />
+                                    <span>Phân Mục</span>
+                                </DropdownMenuItem>
+                            </ManageDocumentTypesDialog>
 
+                            <ManageTopicsDialog>
+                                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                                    <Box className="mr-2 h-4 w-4 text-orange-600" />
+                                    <span>Loại (Topic)</span>
+                                </DropdownMenuItem>
+                            </ManageTopicsDialog>
 
-                        {/* 2. Manage Categories */}
-                        <ManageDocumentTypesDialog>
-                            <Button variant="ghost" size="sm" className="h-8 px-2 text-gray-600 hover:bg-white hover:text-blue-600 hover:shadow-sm">
-                                <FileText className="mr-2 h-3.5 w-3.5" />
-                                Phân Mục
-                            </Button>
-                        </ManageDocumentTypesDialog>
-
-                        <div className="w-px h-4 bg-gray-300"></div>
-
-                        {/* 3. Manage Topics */}
-                        <ManageTopicsDialog>
-                            <Button variant="ghost" size="sm" className="h-8 px-2 text-gray-600 hover:bg-white hover:text-blue-600 hover:shadow-sm">
-                                <Box className="mr-2 h-3.5 w-3.5" />
-                                Loại
-                            </Button>
-                        </ManageTopicsDialog>
-
-                        <div className="w-px h-4 bg-gray-300"></div>
-
-                        {/* 4. Manage Tags */}
-                        <MasterTagsDialog>
-                            <Button variant="ghost" size="sm" className="h-8 px-2 text-gray-600 hover:bg-white hover:text-blue-600 hover:shadow-sm">
-                                <Tag className="mr-2 h-3.5 w-3.5" />
-                                Tags
-                            </Button>
-                        </MasterTagsDialog>
-
-                    </div>
+                            <MasterTagsDialog>
+                                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                                    <Tag className="mr-2 h-4 w-4 text-purple-600" />
+                                    <span>Tags & Model</span>
+                                </DropdownMenuItem>
+                            </MasterTagsDialog>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
 
                     <Link
                         href="/admin/documents/new"
-                        className="h-9 px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 text-sm shadow-sm shrink-0"
+                        className="h-9 px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 text-sm shadow-sm shrink-0 shadow-blue-200"
                     >
                         <PlusCircle size={16} />
                         <span>Tạo mới</span>
